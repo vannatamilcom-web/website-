@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="120" viewBox="0 0 420 120" fill="none" role="img" aria-label="Logo">
+  <rect x="0" y="0" width="420" height="120" rx="28" fill="#ffffff"/>
+  <rect x="12" y="12" width="96" height="96" rx="24" fill="#0f172a"/>
+  <path d="M50 78L34 42h14l9 24 9-24h14L64 78H50Z" fill="#ffffff"/>
+  <path d="M138 40h30c18 0 30 12 30 28s-12 28-30 28h-30V40Zm28 44c8 0 14-6 14-16s-6-16-14-16h-10v32h10Z" fill="#0f172a"/>
+  <path d="M218 40h14v56h-14V40Z" fill="#0f172a"/>
+  <path d="M260 40h16l16 26 16-26h16v56h-14V62l-18 28h-2l-18-28v34h-14V40Z" fill="#0f172a"/>
+  <path d="M368 40h40v12h-26v10h24v12h-24v10h26v12h-40V40Z" fill="#0f172a"/>
+</svg>
