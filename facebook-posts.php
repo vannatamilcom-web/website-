@@ -12,6 +12,8 @@ loadEnvironment(__DIR__ . DIRECTORY_SEPARATOR . '.env');
 
 $pageId = trim((string) (getenv('FACEBOOK_PAGE_ID') ?: ''));
 $pageToken = trim((string) (getenv('FB_PAGE_TOKEN') ?: ''));
+$requestedLimit = isset($_GET['limit']) ? (int) $_GET['limit'] : 10;
+$limit = max(1, min($requestedLimit, 50));
 
 if ($pageId === '' || $pageToken === '') {
     http_response_code(500);
@@ -23,7 +25,7 @@ if ($pageId === '' || $pageToken === '') {
     exit;
 }
 
-$cacheFile = buildCachePath('facebook-posts-cache.json');
+$cacheFile = buildCachePath(sprintf('facebook-posts-cache-%d.json', $limit));
 $cachedPayload = readCache($cacheFile, FACEBOOK_CACHE_TTL);
 
 if ($cachedPayload !== null) {
@@ -32,9 +34,10 @@ if ($cachedPayload !== null) {
 }
 
 $endpoint = sprintf(
-    'https://graph.facebook.com/%s/%s/posts?fields=message,full_picture,created_time,permalink_url&limit=5&access_token=%s',
+    'https://graph.facebook.com/%s/%s/posts?fields=message,full_picture,created_time,permalink_url&limit=%d&access_token=%s',
     FACEBOOK_GRAPH_VERSION,
     rawurlencode($pageId),
+    $limit,
     rawurlencode($pageToken)
 );
 

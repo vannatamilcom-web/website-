@@ -77,6 +77,12 @@ export default function Navbar() {
             >
               YouTube
             </Link>
+            <Link
+              to="/facebook"
+              className="text-sm font-bold text-slate-700 hover:text-primary transition-colors uppercase tracking-wide"
+            >
+              Facebook
+            </Link>
           </div>
 
           {/* Actions */}
@@ -149,6 +155,13 @@ export default function Navbar() {
                 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2"
               >
                 YouTube
+              </Link>
+              <Link
+                to="/facebook"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2"
+              >
+                Facebook
               </Link>
               <button className="mt-4 w-full py-3 bg-primary text-white font-bold rounded-xl">
                 WATCH LIVE TV

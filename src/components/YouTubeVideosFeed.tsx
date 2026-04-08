@@ -18,13 +18,17 @@ type YouTubeVideosResponse = {
   error?: string;
 };
 
+type YouTubeVideosFeedProps = {
+  limit?: number;
+};
+
 const truncate = (value: string, maxLength: number) => {
   const trimmed = value.trim();
   if (trimmed.length <= maxLength) return trimmed;
   return `${trimmed.slice(0, maxLength - 1)}…`;
 };
 
-export default function YouTubeVideosFeed() {
+export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [data, setData] = useState<YouTubeVideosResponse | null>(null);
@@ -125,7 +129,7 @@ export default function YouTubeVideosFeed() {
       </div>
 
       <div className="divide-y divide-slate-100">
-        {videos.slice(0, 6).map((video) => (
+        {videos.slice(0, limit).map((video) => (
           <Link
             key={video.id}
             to={`/videos/${video.id}`}

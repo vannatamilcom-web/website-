@@ -11,7 +11,7 @@ export default function YouTubePage() {
     const loadVideos = async () => {
       setIsLoading(true);
       try {
-        const fetchedVideos = await fetchLatestVideos({ max: 30, useMockFallback: false });
+        const fetchedVideos = await fetchLatestVideos({ max: 50, useMockFallback: false });
         setVideos(fetchedVideos);
       } catch (error) {
         console.error('Failed to load YouTube videos:', error);
@@ -34,7 +34,7 @@ export default function YouTubePage() {
           </div>
           <h1 className="mt-5 text-4xl font-black text-slate-900 leading-tight">All channel videos</h1>
           <p className="mt-4 max-w-2xl text-slate-600">
-            Browse every video published on your YouTube channel. This page only shows videos from your configured channel.
+            Browse all available videos from your configured YouTube channel on this separate page.
           </p>
         </div>
 

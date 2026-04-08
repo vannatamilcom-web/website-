@@ -16,13 +16,17 @@ type FacebookPostsResponse = {
   error?: string;
 };
 
+type FacebookPostsFeedProps = {
+  limit?: number;
+};
+
 const truncate = (value: string, maxLength: number) => {
   const trimmed = value.trim();
   if (trimmed.length <= maxLength) return trimmed;
   return `${trimmed.slice(0, maxLength - 1)}…`;
 };
 
-export default function FacebookPostsFeed() {
+export default function FacebookPostsFeed({ limit = 10 }: FacebookPostsFeedProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [data, setData] = useState<FacebookPostsResponse | null>(null);
@@ -35,7 +39,7 @@ export default function FacebookPostsFeed() {
         setIsLoading(true);
         setErrorMessage(null);
 
-        const response = await fetch('/facebook-posts.php', { cache: 'no-store' });
+        const response = await fetch(`/facebook-posts.php?limit=${encodeURIComponent(String(limit))}`, { cache: 'no-store' });
         if (!response.ok) {
           throw new Error(`facebook-posts.php returned ${response.status}`);
         }
@@ -57,7 +61,7 @@ export default function FacebookPostsFeed() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [limit]);
 
   const posts = useMemo(() => (Array.isArray(data?.posts) ? data!.posts : []), [data]);
 
@@ -101,7 +105,7 @@ export default function FacebookPostsFeed() {
         )}
       </div>
       <div className="divide-y divide-slate-100">
-        {posts.slice(0, 8).map((post) => (
+        {posts.slice(0, limit).map((post) => (
           <a
             key={post.id}
             href={post.permalinkUrl || '#'}
