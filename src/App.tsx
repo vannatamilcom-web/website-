@@ -20,6 +20,7 @@ import AboutPage from './pages/AboutPage';
 import FacebookPostsFeed from './components/FacebookPostsFeed';
 import InstagramPostsFeed from './components/InstagramPostsFeed';
 import YouTubeVideosFeed from './components/YouTubeVideosFeed';
+import FacebookVideosFeed from './components/FacebookVideosFeed';
 import { CATEGORIES, MOCK_NEWS } from './lib/api';
 import { getCategoryLabel } from './lib/categoryDisplay';
 import YouTubePlayerSection from './components/YouTubePlayerSection';
@@ -325,6 +326,17 @@ function HomePage() {
                   </Link>
                 </div>
                 <YouTubeVideosFeed />
+              </div>
+
+              <div className="rounded-[32px] border border-slate-200 bg-slate-50 p-6">
+                <div className="flex items-start justify-between gap-6 mb-4">
+                  <div>
+                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">Facebook</div>
+                    <h3 className="mt-2 text-xl font-black text-slate-900">Latest videos</h3>
+                    <p className="mt-2 text-sm text-slate-600">Recent videos from our Facebook page, placed right below YouTube.</p>
+                  </div>
+                </div>
+                <FacebookVideosFeed />
               </div>
 
               <div className="rounded-[32px] border border-slate-200 bg-slate-50 p-6">

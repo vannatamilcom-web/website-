@@ -13,6 +13,7 @@ type FacebookPostsResponse = {
   pageId?: string;
   count?: number;
   posts?: FacebookPost[];
+  error?: string;
 };
 
 const truncate = (value: string, maxLength: number) => {
@@ -34,9 +35,9 @@ export default function FacebookPostsFeed() {
         setIsLoading(true);
         setErrorMessage(null);
 
-        const response = await fetch('/facebook-posts.json', { cache: 'no-store' });
+        const response = await fetch('/facebook-posts.php', { cache: 'no-store' });
         if (!response.ok) {
-          throw new Error(`Missing facebook-posts.json (${response.status})`);
+          throw new Error(`facebook-posts.php returned ${response.status}`);
         }
 
         const json = (await response.json()) as FacebookPostsResponse;
@@ -79,19 +80,14 @@ export default function FacebookPostsFeed() {
         <div className="text-sm font-black text-slate-900 mb-2">Facebook latest posts</div>
         <div className="text-sm text-slate-700 leading-relaxed">
           {errorMessage
-            ? 'Facebook posts are not available yet on this deployment.'
-            : 'No Facebook posts found yet for this deployment.'}
+            ? 'Facebook posts are not available right now.'
+            : 'No Facebook posts found yet for this page.'}
         </div>
         {data?.error ? (
           <div className="text-xs text-slate-500 mt-3 leading-relaxed">
             Debug: <span className="font-mono">{data.error}</span>
           </div>
         ) : null}
-        <div className="text-xs text-slate-500 mt-3 leading-relaxed">
-          To enable: add GitHub Secrets <span className="font-mono">FACEBOOK_PAGE_ID</span> and{' '}
-          <span className="font-mono">FACEBOOK_PAGE_ACCESS_TOKEN</span>, then run the deploy workflow (or enable a
-          schedule).
-        </div>
       </div>
     );
   }
