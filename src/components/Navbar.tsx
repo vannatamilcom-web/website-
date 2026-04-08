@@ -57,7 +57,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="w-44 sm:w-56 md:w-64 h-auto"
+                className="w-44 sm:w-56 md:w-72 lg:w-80 xl:w-[22rem] h-auto"
                 loading="eager"
                 decoding="async"
               />

@@ -25,7 +25,7 @@ export default function FacebookPage() {
             </p>
           </div>
 
-          <FacebookPostsFeed limit={30} />
+          <FacebookPostsFeed limit={30} variant="article" />
         </div>
       </div>
     </main>
