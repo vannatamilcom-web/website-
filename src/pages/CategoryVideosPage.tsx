@@ -1,45 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { ExternalLink } from 'lucide-react';
 import { CATEGORIES, getCategoryBg } from '../lib/api';
 import { getCategoryLabel } from '../lib/categoryDisplay';
+import { getCategoryKeywords, getCategorySearchQuery } from '../lib/categoryFilters';
+import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import { fetchLatestVideos, getConfiguredMoviesPlaylistId, Video } from '../lib/youtube';
-import { ExternalLink } from 'lucide-react';
-
-const CATEGORY_KEYWORDS: Record<string, string[]> = {
-  'tamil-nadu': ['தமிழ்நாடு', 'tamil nadu', 'tamil', 'chennai', 'madurai', 'பழநி', 'politics', 'நிலவரம்'],
-  business: ['business', 'economy', 'finance', 'trade', 'stock', 'வணிகம்', 'பொருளாதாரம்'],
-  technology: ['technology', 'tech', 'ai', 'software', 'internet', 'robotics', 'தொழில்நுட்பம்', 'செயற்கை நுண்ணறிவு'],
-  sports: ['sports', 'cricket', 'football', 'kabaddi', 'olympics', 'விளையாட்டு', 'IPL'],
-  entertainment: [
-    'movie',
-    'movies',
-    'tamil movie',
-    'film',
-    'cinema',
-    'tamil cinema',
-    'kollywood',
-    'trailer',
-    'teaser',
-    'review',
-    'songs',
-    'song',
-    'lyrics',
-    'திரைப்படம்',
-    'திரைப்பட',
-    'படம்',
-    'சினிமா',
-    'ட்ரெய்லர்',
-    'டீசர்',
-    'விமர்சனம்',
-    'பாடல்',
-    'பாடல்கள்',
-    'கொலிவுட்',
-  ],
-};
-
-const CATEGORY_SEARCH_QUERY: Partial<Record<string, string>> = {
-  entertainment: 'tamil movie',
-};
 
 export default function CategoryVideosPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -59,9 +25,9 @@ export default function CategoryVideosPage() {
 
         const fetchedVideos = await fetchLatestVideos({
           max: 36,
-          query: CATEGORY_SEARCH_QUERY[category.slug],
+          query: getCategorySearchQuery(category.slug),
           playlistId: moviesPlaylistId ?? undefined,
-          keywords: CATEGORY_KEYWORDS[category.slug] ?? [category.name],
+          keywords: getCategoryKeywords(category.slug).length ? getCategoryKeywords(category.slug) : [category.name],
           useMockFallback: false,
         });
         setVideos(fetchedVideos);
@@ -77,8 +43,6 @@ export default function CategoryVideosPage() {
 
     load();
   }, [category]);
-
-  const handleVideoClick = (video: Video) => setSelectedVideo(video);
 
   if (!category) {
     return (
@@ -108,7 +72,9 @@ export default function CategoryVideosPage() {
               {categoryTa}
             </span>
             <h1 className="mt-4 text-4xl font-black text-slate-900 leading-tight">{categoryEn} Videos</h1>
-            <p className="mt-3 text-slate-600 max-w-2xl">Watching the latest YouTube content filtered for {categoryEn} topics.</p>
+            <p className="mt-3 text-slate-600 max-w-2xl">
+              Only videos from your configured YouTube channel that match the {categoryEn} topic are shown here.
+            </p>
           </div>
           <Link
             to="/menu"
@@ -118,8 +84,8 @@ export default function CategoryVideosPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 space-y-6">
             <div className="relative aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl">
               {selectedVideo ? (
                 <iframe
@@ -156,7 +122,7 @@ export default function CategoryVideosPage() {
             </article>
           </div>
 
-          <aside className="lg:col-span-1">
+          <aside className="lg:col-span-4 space-y-6">
             <div className="rounded-[40px] bg-white p-6 shadow-sm border border-slate-200 max-h-[760px] overflow-y-auto">
               <h2 className="text-xl font-black text-slate-900 mb-6">Category videos</h2>
               <div className="space-y-4">
@@ -168,8 +134,10 @@ export default function CategoryVideosPage() {
                   videos.map((video) => (
                     <button
                       key={video.id}
-                      onClick={() => handleVideoClick(video)}
-                      className={`w-full text-left rounded-3xl border p-4 transition-all ${selectedVideo?.id === video.id ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-slate-300'}`}
+                      onClick={() => setSelectedVideo(video)}
+                      className={`w-full text-left rounded-3xl border p-4 transition-all ${
+                        selectedVideo?.id === video.id ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-slate-300'
+                      }`}
                     >
                       <div className="font-semibold text-slate-900 line-clamp-2">{video.title}</div>
                       {video.description ? (
@@ -183,6 +151,12 @@ export default function CategoryVideosPage() {
                 )}
               </div>
             </div>
+
+            <RightSidebarBlocks
+              categorySlug={category.slug}
+              youtubeTitle={`${categoryEn} YouTube`}
+              facebookTitle={`${categoryEn} Facebook`}
+            />
           </aside>
         </div>
       </div>

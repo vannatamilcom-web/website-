@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Youtube } from 'lucide-react';
+import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import { fetchLatestVideos, Video } from '../lib/youtube';
 
 export default function YouTubePage() {
@@ -34,49 +35,60 @@ export default function YouTubePage() {
           </div>
           <h1 className="mt-5 text-4xl font-black text-slate-900 leading-tight">All channel videos</h1>
           <p className="mt-4 max-w-2xl text-slate-600">
-            Browse all available videos from your configured YouTube channel on this separate page.
+            Browse all available videos from your configured YouTube channel.
           </p>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="h-80 animate-pulse rounded-[32px] bg-slate-100" />
-            ))}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="h-80 animate-pulse rounded-[32px] bg-slate-100" />
+              ))}
+            </div>
+            <div className="xl:col-span-4">
+              <div className="h-96 animate-pulse rounded-[32px] bg-slate-100" />
+            </div>
           </div>
         ) : videos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {videos.map((video) => (
-              <Link
-                key={video.id}
-                to={`/videos/${video.id}`}
-                className="group block overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-sm transition hover:shadow-xl"
-              >
-                <div className="relative overflow-hidden rounded-t-[32px] bg-slate-900">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="h-52 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {video.isLive ? (
-                    <span className="absolute top-4 left-4 rounded-full bg-red-600 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
-                      LIVE
-                    </span>
-                  ) : null}
-                </div>
-                <div className="p-6">
-                  <h2 className="text-lg font-black text-slate-900 line-clamp-2">{video.title}</h2>
-                  <p className="mt-3 text-sm text-slate-500 leading-relaxed line-clamp-3">
-                    {video.description || 'No description available.'}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between text-xs uppercase tracking-widest text-slate-400">
-                    <span>{video.publishedAt}</span>
-                    <span className="font-black text-primary">Watch</span>
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {videos.map((video) => (
+                <Link
+                  key={video.id}
+                  to={`/videos/${video.id}`}
+                  className="group block overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-sm transition hover:shadow-xl"
+                >
+                  <div className="relative overflow-hidden rounded-t-[32px] bg-slate-900">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="h-52 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {video.isLive ? (
+                      <span className="absolute top-4 left-4 rounded-full bg-red-600 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+                        LIVE
+                      </span>
+                    ) : null}
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div className="p-6">
+                    <h2 className="text-lg font-black text-slate-900 line-clamp-2">{video.title}</h2>
+                    <p className="mt-3 text-sm text-slate-500 leading-relaxed line-clamp-3">
+                      {video.description || 'No description available.'}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between text-xs uppercase tracking-widest text-slate-400">
+                      <span>{video.publishedAt}</span>
+                      <span className="font-black text-primary">Watch</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="xl:col-span-4">
+              <RightSidebarBlocks youtubeTitle="Latest YouTube" facebookTitle="Latest Facebook" />
+            </div>
           </div>
         ) : (
           <div className="rounded-[32px] border border-slate-200 bg-white p-12 text-center text-slate-600 shadow-sm">

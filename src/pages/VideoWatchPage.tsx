@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
+import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import { fetchLatestVideos, Video } from '../lib/youtube';
 
 function toPlainText(value: string | undefined): string {
@@ -74,7 +75,7 @@ export default function VideoWatchPage() {
             </article>
           </div>
 
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 space-y-6">
             <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
               <div className="p-6 border-b border-white/10">
                 <h3 className="font-black uppercase tracking-widest text-sm">More videos</h3>
@@ -116,6 +117,8 @@ export default function VideoWatchPage() {
                 </div>
               </div>
             </div>
+
+            <RightSidebarBlocks />
           </div>
         </div>
       </div>

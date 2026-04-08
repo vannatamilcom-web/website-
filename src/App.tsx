@@ -5,6 +5,7 @@ import TopAdBar from './components/TopAdBar';
 import BreakingNewsTicker from './components/BreakingNewsTicker';
 import NewsCard from './components/NewsCard';
 import Footer from './components/Footer';
+import GlobalRightSidebar from './components/GlobalRightSidebar';
 import LiveTVPage from './pages/LiveTVPage';
 import MenuPage from './pages/MenuPage';
 import CategoryVideosPage from './pages/CategoryVideosPage';
@@ -349,6 +350,7 @@ export default function App() {
       <div className="min-h-screen flex flex-col">
         <TopAdBar />
         <Navbar />
+        <GlobalRightSidebar />
         <AnimatedRoutes />
         <Footer />
       </div>
