@@ -12,7 +12,7 @@ export default function BreakingNewsTicker() {
   return (
     <div className="bg-red-600 text-white py-2 flex items-center">
       <div className="px-4 font-black text-xs uppercase tracking-widest border-r border-white/20 whitespace-nowrap shrink-0">
-        Breaking News
+        முக்கிய செய்திகள்
       </div>
       <div className="flex-1 min-w-0 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">

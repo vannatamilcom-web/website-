@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Youtube } from 'lucide-react';
 import RightSidebarBlocks from '../components/RightSidebarBlocks';
+import Seo from '../components/Seo';
 import { fetchLatestVideos, Video } from '../lib/youtube';
 
 export default function YouTubePage() {
@@ -27,6 +28,12 @@ export default function YouTubePage() {
 
   return (
     <main className="pt-[var(--navbar-height)] min-h-screen bg-slate-50">
+      <Seo
+        title="YouTube Videos | Vannatamil News"
+        description="Watch the latest YouTube videos from Vannatamil News including breaking updates, live clips, and Tamil news coverage."
+        keywords="Vannatamil News YouTube, Tamil news videos, latest Tamil videos, live news clips Tamil"
+        canonicalPath="/youtube"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">

@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
 import { CATEGORIES, getCategoryBg } from '../lib/api';
 import { getCategoryLabel } from '../lib/categoryDisplay';
+import Seo from '../components/Seo';
 
 export default function MenuPage() {
   return (
     <main className="pt-[var(--navbar-height)] min-h-screen bg-slate-50">
+      <Seo
+        title="Categories | Vannatamil News"
+        description="Browse Vannatamil News by category including Tamil Nadu, politics, business, technology, sports, and entertainment."
+        keywords="Tamil news categories, Tamil Nadu news, politics news Tamil, sports news Tamil, business news Tamil"
+        canonicalPath="/menu"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-10">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary text-white font-black uppercase tracking-[0.3em] text-xs mb-4">
@@ -45,4 +52,3 @@ export default function MenuPage() {
     </main>
   );
 }
-
