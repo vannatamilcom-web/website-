@@ -49,15 +49,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 shrink-0">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <button onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(true); }} className="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
               <Menu className="w-6 h-6 text-primary" />
             </button>
-            <div className="p-1 w-36 sm:w-44 md:w-56 lg:w-64 xl:w-72">
+            <div className="p-1 w-32 sm:w-40 md:w-44 lg:w-48 xl:w-52">
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="block w-full h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain object-left"
+                className="block w-full h-12 sm:h-14 md:h-14 lg:h-16 xl:h-18 object-contain object-left"
                 loading="eager"
                 decoding="async"
               />
@@ -65,7 +65,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Categories */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-7">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.slug}
