@@ -1,8 +1,12 @@
 import React from 'react';
 import { TrendingUp, Mail, Instagram, Twitter, Youtube } from 'lucide-react';
 import NewsCard from './NewsCard';
+import { FACEBOOK_URL, FACEBOOK_PAGE_URL, INSTAGRAM_URL } from '../lib/socialLinks';
 
 export default function SidebarTrending({ articles }: { articles: any[] }) {
+  const facebookUrl = FACEBOOK_URL || FACEBOOK_PAGE_URL || '#';
+  const instagramUrl = INSTAGRAM_URL || '#';
+
   return (
     <aside className="space-y-12 sticky top-24">
       {/* Trending News */}
@@ -42,11 +46,11 @@ export default function SidebarTrending({ articles }: { articles: any[] }) {
       <div>
         <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs mb-6">Follow Us</h3>
         <div className="grid grid-cols-3 gap-3">
-          <a href="#" className="flex flex-col items-center justify-center p-4 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors group">
+          <a href={facebookUrl} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-4 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors group">
             <Twitter className="w-5 h-5 text-slate-600 group-hover:text-[#1DA1F2]" />
-            <span className="text-[10px] font-bold mt-2">X</span>
+            <span className="text-[10px] font-bold mt-2">FB</span>
           </a>
-          <a href="#" className="flex flex-col items-center justify-center p-4 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors group">
+          <a href={instagramUrl} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-4 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors group">
             <Instagram className="w-5 h-5 text-slate-600 group-hover:text-[#E4405F]" />
             <span className="text-[10px] font-bold mt-2">INSTA</span>
           </a>

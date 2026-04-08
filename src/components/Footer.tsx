@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FACEBOOK_URL, FACEBOOK_PAGE_URL } from '../lib/socialLinks';
+import { FACEBOOK_URL, FACEBOOK_PAGE_URL, INSTAGRAM_URL } from '../lib/socialLinks';
 
 export default function Footer() {
   const facebookUrl = FACEBOOK_URL || FACEBOOK_PAGE_URL || '#';
+  const instagramUrl = INSTAGRAM_URL || '#';
 
   return (
     <footer className="bg-slate-900 text-white pt-20 pb-10">
@@ -128,7 +129,7 @@ export default function Footer() {
             <a href="#" className="hover:text-white transition-colors">
               Twitter
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a href={instagramUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
               Instagram
             </a>
           </div>

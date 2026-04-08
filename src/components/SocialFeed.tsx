@@ -1,6 +1,6 @@
 import React from 'react';
 import { Twitter, Instagram } from 'lucide-react';
-import { FACEBOOK_URL, FACEBOOK_PAGE_URL } from '../lib/socialLinks';
+import { FACEBOOK_URL, FACEBOOK_PAGE_URL, INSTAGRAM_URL } from '../lib/socialLinks';
 import FacebookPostsFeed from './FacebookPostsFeed';
 import InstagramPostsFeed from './InstagramPostsFeed';
 import YouTubeVideosFeed from './YouTubeVideosFeed';
@@ -8,6 +8,7 @@ import YouTubeVideosFeed from './YouTubeVideosFeed';
 export default function SocialFeed() {
   const facebookUrl = FACEBOOK_URL;
   const facebookPageUrl = FACEBOOK_PAGE_URL;
+  const instagramUrl = INSTAGRAM_URL;
 
   return (
     <section id="social" className="py-12 border-t border-slate-100">
@@ -31,12 +32,17 @@ export default function SocialFeed() {
           >
             f
           </a>
-          <button className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">
+          <a href="#" className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">
             <Twitter className="w-4 h-4 text-[#1DA1F2]" />
-          </button>
-          <button className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">
+          </a>
+          <a
+            href={instagramUrl || '#'}
+            target="_blank"
+            rel="noreferrer"
+            className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors"
+          >
             <Instagram className="w-4 h-4 text-[#E4405F]" />
-          </button>
+          </a>
         </div>
       </div>
 
