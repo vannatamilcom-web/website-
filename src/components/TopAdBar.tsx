@@ -24,16 +24,16 @@ export default function TopAdBar() {
       ref={barRef}
       className="fixed top-0 inset-x-0 z-[55] bg-white border-b border-slate-200"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
             <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">விளம்பரம்</div>
-            <div className="text-sm font-black text-slate-900 truncate">
+            <div className="text-xs sm:text-sm font-black text-slate-900 truncate">
               உங்கள் வியாபாரத்தை வண்ணதமிழ் நியூஸில் விளம்பரப்படுத்துங்கள்
             </div>
           </div>
           <a
-            className="shrink-0 px-4 py-2 rounded-xl bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-colors"
+            className="shrink-0 px-4 py-1.5 rounded-xl bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-colors"
             href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
           >
             தொடர்பு கொள்ள

@@ -74,7 +74,7 @@ export default function Navbar() {
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'}`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-1.5' : 'bg-white/95 backdrop-blur-md py-2'}`}
       style={{ top: 'var(--topbar-height, 0px)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-6">
@@ -92,19 +92,19 @@ export default function Navbar() {
             <motion.div
               whileHover={{ y: -2, scale: 1.02 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden py-1 pr-1 w-[110px] sm:w-[138px] md:w-[150px] lg:w-[170px] xl:w-[182px]"
+              className="overflow-hidden py-0.5 pr-1 w-[92px] sm:w-[118px] md:w-[132px] lg:w-[148px] xl:w-[160px]"
             >
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="block h-16 sm:h-[72px] md:h-[76px] lg:h-[84px] xl:h-[88px] w-auto max-w-none object-contain object-left transition-transform duration-500 group-hover:scale-[1.03]"
+                className="block h-12 sm:h-[58px] md:h-[62px] lg:h-[68px] xl:h-[72px] w-auto max-w-none object-contain object-left transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="eager"
                 decoding="async"
               />
             </motion.div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
             {CATEGORIES.map((cat) => (
               <DesktopNavLink key={cat.slug} to={`/category/${cat.slug}`}>
                 {getCategoryLabel(cat, lang)}
@@ -114,7 +114,7 @@ export default function Navbar() {
             <DesktopNavLink to="/facebook">{text.social}</DesktopNavLink>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button className="rounded-full p-2 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-100">
               <Search className="w-5 h-5 text-slate-600" />
             </button>
