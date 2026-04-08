@@ -49,15 +49,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-6">
         <div className="flex justify-between items-center gap-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
+          <Link to="/" className="flex items-center gap-1 shrink-0">
             <button onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(true); }} className="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
               <Menu className="w-6 h-6 text-primary" />
             </button>
-            <div className="p-1 w-36 sm:w-44 md:w-48 lg:w-56 xl:w-60">
+            <div className="py-1 pr-1 w-[110px] sm:w-[138px] md:w-[150px] lg:w-[170px] xl:w-[182px] overflow-hidden">
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="block w-full h-14 sm:h-16 md:h-16 lg:h-20 xl:h-20 object-contain object-left"
+                className="block h-16 sm:h-[72px] md:h-[76px] lg:h-[84px] xl:h-[88px] w-auto max-w-none object-contain object-left"
                 loading="eager"
                 decoding="async"
               />
