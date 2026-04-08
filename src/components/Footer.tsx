@@ -117,19 +117,19 @@ export default function Footer() {
         </div>
 
         <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-500 text-xs font-bold uppercase tracking-widest">
-          <p>© 2026. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.</p>
+          <p>© 2026. All rights reserved.</p>
           <div className="flex flex-wrap items-center justify-center gap-8">
             <Link to="/about" className="hover:text-white transition-colors">
-              பற்றி
+              About
             </Link>
             <a href={facebookUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-              பேஸ்புக்
+              Facebook
             </a>
             <a href="#" className="hover:text-white transition-colors">
-              ட்விட்டர்
+              Twitter
             </a>
             <a href="#" className="hover:text-white transition-colors">
-              இன்ஸ்டாகிராம்
+              Instagram
             </a>
           </div>
         </div>

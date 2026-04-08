@@ -21,6 +21,7 @@ import FacebookPostsFeed from './components/FacebookPostsFeed';
 import YouTubeVideosFeed from './components/YouTubeVideosFeed';
 import { CATEGORIES } from './lib/api';
 import { getCategoryLabel } from './lib/categoryDisplay';
+import { LanguageProvider, useAppLanguage } from './lib/language';
 import { ArrowRight, BadgeCheck, Megaphone, Play, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -59,6 +60,8 @@ function AnimatedRoutes() {
 }
 
 function HomePage() {
+  const { lang } = useAppLanguage();
+
   const categoryHighlights = useMemo(() => {
     type Category = (typeof CATEGORIES)[number];
     const order = ['tamil-nadu', 'business', 'technology', 'sports', 'entertainment'];
@@ -67,12 +70,116 @@ function HomePage() {
     return (picks.length ? picks : CATEGORIES).slice(0, 5);
   }, []);
 
+  const text = lang === 'ta'
+    ? {
+        title: 'Vannatamil News | Tamil News, Breaking Updates, Live TV',
+        description: 'Latest Tamil news, breaking updates, live TV, YouTube videos, and category-wise coverage from Vannatamil News.',
+        keywords: 'Tamil news, breaking news Tamil, live TV Tamil, Vannatamil News, Tamil Nadu news, YouTube Tamil news',
+        heroBadge: 'வண்ணதமிழ் நியூஸ்',
+        heroTitle: 'சமீபத்திய தமிழ் செய்திகள் மற்றும் வீடியோக்கள், வேகமாகவும் நம்பகமாகவும்.',
+        heroBody: 'புதிய YouTube பதிவுகளை பாருங்கள், உடனடி செய்திகளைப் பெறுங்கள், மற்றும் பிரிவுகளின்படி செய்திகளை ஆராயுங்கள்.',
+        viewVideos: 'வீடியோக்களை பார்க்க',
+        aboutUs: 'எங்களை பற்றி',
+        watchLive: 'நேரலை பார்க்க',
+        highlights: 'முக்கிய அம்சங்கள்',
+        verified: 'சரிபார்க்கப்பட்ட தகவல்',
+        coverage: 'செய்தி பரப்பு',
+        coverageValue: 'தமிழ்நாடு + இந்தியா',
+        coverageSub: 'மாநில மற்றும் தேசிய அப்டேட்கள்',
+        format: 'வடிவம்',
+        formatValue: 'வீடியோ மையம்',
+        formatSub: 'YouTube + நேரலை ஒளிபரப்பு',
+        open: 'திறக்க',
+        latestPostsBadge: 'Latest Posts',
+        latestPostsTitle: 'முகப்புப் பக்கத்திற்கான சமீபத்திய பதிவுகள்',
+        latestPostsBody: 'முக்கியமான சமூக ஊடக அப்டேட்களில் இருந்து 2 சமீபத்திய பதிவுகளை இங்கே நேரடியாக பார்க்கலாம்.',
+        allPosts: 'அனைத்து பதிவுகளும்',
+        socialBadge: 'சமூக ஊடகம்',
+        socialTitle: 'எங்களை எல்லா தளங்களிலும் பின்தொடருங்கள்',
+        socialBody: 'எங்கள் YouTube சேனல், Instagram feed மற்றும் சமூக ஊடக பக்கங்களின் சமீபத்திய அப்டேட்கள் இங்கே.',
+        youtubeLabel: 'யூடியூப்',
+        youtubeTitle: 'சமீபத்திய வீடியோக்கள்',
+        youtubeBody: 'புதிய பதிவுகளைப் பாருங்கள் மற்றும் முழு வீடியோவைத் திறக்கவும்.',
+        socialLabel: 'சமூக ஊடகம்',
+        socialPostsTitle: 'சமீபத்திய சமூக ஊடக பதிவுகள்',
+        socialPostsBody: 'முகப்புப் பக்கத்திலேயே சமீபத்திய சமூக ஊடக பதிவுகளைப் பாருங்கள்.',
+        seeAll: 'அனைத்தையும் பார்க்க',
+        adBadge: 'விளம்பரம்',
+        adTitle: 'உங்கள் பிராண்டை எங்களுடன் விளம்பரப்படுத்துங்கள்',
+        adBody: 'பேனர் விளம்பரம், ஸ்பான்சர் பகுதி, அல்லது உங்கள் பிராண்டு பிரச்சாரத்திற்கான இடத்தை பதிவு செய்யுங்கள்.',
+        adContact: 'விளம்பரத்திற்கு தொடர்பு கொள்ள',
+        adSlot: 'விளம்பர இடம்',
+        topBanner: 'மேல் பேனர்',
+        sidebarCard: 'பக்க கார்டு',
+        sizeLarge: 'பரிந்துரைக்கப்படும் அளவு: 728x90 அல்லது 970x250.',
+        sizeSmall: 'பரிந்துரைக்கப்படும் அளவு: 300x250.',
+        yourBrandHere: 'உங்கள் பிராண்டு இங்கே',
+        sponsor: 'ஸ்பான்சர்',
+        thisSection: 'இந்த பகுதி',
+        email: 'மின்னஞ்சல்',
+        liveTitle: 'எங்கிருந்தும் நேரலையில் செய்திகளைப் பாருங்கள்',
+        liveBody: 'நேரடி செய்தி அப்டேட்களுடன் இணைந்திருங்கள். எந்த நேரத்திலும் எந்த சாதனத்திலும் எங்கள் நேரலை ஒளிபரப்பைப் பாருங்கள்.',
+        liveCta: 'நேரலை டிவி பார்க்க',
+        learnMore: 'மேலும் அறிய',
+      }
+    : {
+        title: 'Vannatamil News | Tamil News, Breaking Updates, Live TV',
+        description: 'Latest Tamil news, breaking updates, live TV, YouTube videos, and category-wise coverage from Vannatamil News.',
+        keywords: 'Tamil news, breaking news Tamil, live TV Tamil, Vannatamil News, Tamil Nadu news, YouTube Tamil news',
+        heroBadge: 'Vannatamil News',
+        heroTitle: 'Latest Tamil news and videos, delivered fast and reliably.',
+        heroBody: 'Watch new YouTube uploads, get instant updates, and explore stories by category.',
+        viewVideos: 'Watch Videos',
+        aboutUs: 'About Us',
+        watchLive: 'Watch Live',
+        highlights: 'Key Highlights',
+        verified: 'Verified Information',
+        coverage: 'Coverage',
+        coverageValue: 'Tamil Nadu + India',
+        coverageSub: 'State and national updates',
+        format: 'Format',
+        formatValue: 'Video-first',
+        formatSub: 'YouTube + live streaming',
+        open: 'Open',
+        latestPostsBadge: 'Latest Posts',
+        latestPostsTitle: 'Latest posts for the home page',
+        latestPostsBody: 'See 2 recent social media updates directly on the homepage.',
+        allPosts: 'All Posts',
+        socialBadge: 'Social Media',
+        socialTitle: 'Follow us across every platform',
+        socialBody: 'The latest updates from our YouTube channel, Instagram feed, and social media pages are here.',
+        youtubeLabel: 'YOUTUBE',
+        youtubeTitle: 'Latest videos',
+        youtubeBody: 'Browse the newest uploads and open the full video.',
+        socialLabel: 'SOCIAL MEDIA',
+        socialPostsTitle: 'Latest social media posts',
+        socialPostsBody: 'See the newest social media updates right from the homepage.',
+        seeAll: 'See All',
+        adBadge: 'Advertising',
+        adTitle: 'Promote your brand with us',
+        adBody: 'Book banner ads, sponsored placements, or featured promotion space for your brand.',
+        adContact: 'Contact for Ads',
+        adSlot: 'Ad Slot',
+        topBanner: 'Top Banner',
+        sidebarCard: 'Sidebar Card',
+        sizeLarge: 'Suggested size: 728x90 or 970x250.',
+        sizeSmall: 'Suggested size: 300x250.',
+        yourBrandHere: 'YOUR BRAND HERE',
+        sponsor: 'SPONSOR',
+        thisSection: 'THIS SECTION',
+        email: 'Email',
+        liveTitle: 'Watch live news from anywhere',
+        liveBody: 'Stay connected with live news updates. Watch our live stream anytime on any device.',
+        liveCta: 'Watch Live TV',
+        learnMore: 'Learn More',
+      };
+
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-[var(--navbar-height)]">
       <Seo
-        title="Vannatamil News | Tamil News, Breaking Updates, Live TV"
-        description="Latest Tamil news, breaking updates, live TV, YouTube videos, and category-wise coverage from Vannatamil News."
-        keywords="Tamil news, breaking news Tamil, live TV Tamil, Vannatamil News, Tamil Nadu news, YouTube Tamil news"
+        title={text.title}
+        description={text.description}
+        keywords={text.keywords}
         canonicalPath="/"
         structuredData={{
           '@context': 'https://schema.org',
@@ -88,60 +195,60 @@ function HomePage() {
       <section className="relative overflow-hidden bg-slate-900">
         <div className="absolute inset-0 opacity-25">
           <div className="absolute -top-24 -left-24 w-[520px] h-[520px] bg-primary/60 blur-3xl rounded-full" />
-          <div className="absolute -bottom-24 -right-24 w-[520px] h-[520px] bg-white/20 blur-3xl rounded-full" />
+          <div className="absolute -bottom-24 -right-24 w-[520px] h-[520px] bg-amber-300/20 blur-3xl rounded-full" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-white">
-                <Sparkles className="w-4 h-4" /> வண்ணதமிழ் நியூஸ்
+                <Sparkles className="w-4 h-4" /> {text.heroBadge}
               </div>
               <h1 className="mt-6 text-4xl sm:text-5xl font-black text-white leading-tight">
-                சமீபத்திய தமிழ் செய்திகள் மற்றும் வீடியோக்கள், வேகமாகவும் நம்பகமாகவும்.
+                {text.heroTitle}
               </h1>
               <p className="mt-5 text-white/70 text-base sm:text-lg max-w-2xl">
-                புதிய YouTube பதிவுகளை பாருங்கள், உடனடி செய்திகளைப் பெறுங்கள், மற்றும் பிரிவுகளின்படி செய்திகளை ஆராயுங்கள்.
+                {text.heroBody}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
                   href="#social"
                   className="px-8 py-3 bg-white text-slate-900 font-black rounded-2xl hover:bg-slate-100 transition-all shadow-xl shadow-black/20 inline-flex items-center gap-2"
                 >
-                  வீடியோக்களை பார்க்க <ArrowRight className="w-4 h-4" />
+                  {text.viewVideos} <ArrowRight className="w-4 h-4" />
                 </a>
                 <Link
                   to="/about"
-                  className="px-8 py-3 bg-white/10 border border-white/20 text-white font-black rounded-2xl hover:bg-white/20 transition-all inline-flex items-center gap-2"
+                  className="px-8 py-3 bg-slate-700/70 border border-slate-400/60 text-white font-black rounded-2xl hover:bg-slate-600/80 transition-all inline-flex items-center gap-2 shadow-lg shadow-slate-950/20"
                 >
-                  எங்களை பற்றி <ArrowRight className="w-4 h-4" />
+                  {text.aboutUs} <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/live-tv"
                   className="px-8 py-3 bg-primary text-white font-black rounded-2xl hover:bg-primary/90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20"
                 >
-                  நேரலை பார்க்க <Play className="w-4 h-4 fill-white" />
+                  {text.watchLive} <Play className="w-4 h-4 fill-white" />
                 </Link>
               </div>
             </div>
 
             <div className="lg:col-span-5">
-              <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 sm:p-8">
+              <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-primary/25 via-white/10 to-amber-300/10 p-6 sm:p-8 shadow-2xl shadow-primary/10 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-black uppercase tracking-widest text-white/60">முக்கிய அம்சங்கள்</div>
-                  <div className="inline-flex items-center gap-2 text-white/70 text-xs font-bold">
-                    <ShieldCheck className="w-4 h-4 text-primary" /> சரிபார்க்கப்பட்ட தகவல்
+                  <div className="text-xs font-black uppercase tracking-widest text-white/70">{text.highlights}</div>
+                  <div className="inline-flex items-center gap-2 text-white/80 text-xs font-bold">
+                    <ShieldCheck className="w-4 h-4 text-amber-300" /> {text.verified}
                   </div>
                 </div>
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-white/60">செய்தி பரப்பு</div>
-                    <div className="mt-2 text-lg font-black text-white">தமிழ்நாடு + இந்தியா</div>
-                    <div className="mt-1 text-xs text-white/60">மாநில மற்றும் தேசிய அப்டேட்கள்</div>
+                  <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-white/60">{text.coverage}</div>
+                    <div className="mt-2 text-lg font-black text-white">{text.coverageValue}</div>
+                    <div className="mt-1 text-xs text-white/60">{text.coverageSub}</div>
                   </div>
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-white/60">வடிவம்</div>
-                    <div className="mt-2 text-lg font-black text-white">வீடியோ மையம்</div>
-                    <div className="mt-1 text-xs text-white/60">YouTube + நேரலை ஒளிபரப்பு</div>
+                  <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-white/60">{text.format}</div>
+                    <div className="mt-2 text-lg font-black text-white">{text.formatValue}</div>
+                    <div className="mt-1 text-xs text-white/60">{text.formatSub}</div>
                   </div>
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-3">
@@ -149,11 +256,11 @@ function HomePage() {
                     <Link
                       key={cat.slug}
                       to={`/category/${cat.slug}`}
-                      className="group flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 hover:bg-white/10 transition-colors"
+                      className="group flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3 hover:bg-white/15 transition-colors"
                     >
-                      <span className="text-sm font-black text-white">{getCategoryLabel(cat, 'ta')}</span>
+                      <span className="text-sm font-black text-white">{getCategoryLabel(cat, lang)}</span>
                       <span className="text-xs font-bold text-white/70 group-hover:text-white inline-flex items-center gap-2">
-                        திறக்க <ArrowRight className="w-4 h-4" />
+                        {text.open} <ArrowRight className="w-4 h-4" />
                       </span>
                     </Link>
                   ))}
@@ -170,18 +277,18 @@ function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
                 <BadgeCheck className="w-4 h-4" />
-                Latest Posts
+                {text.latestPostsBadge}
               </div>
-              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">முகப்புப் பக்கத்திற்கான சமீபத்திய பதிவுகள்</h2>
+              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">{text.latestPostsTitle}</h2>
               <p className="mt-4 max-w-2xl text-slate-600">
-                முக்கியமான சமூக ஊடக அப்டேட்களில் இருந்து 2 சமீபத்திய பதிவுகளை இங்கே நேரடியாக பார்க்கலாம்.
+                {text.latestPostsBody}
               </p>
             </div>
             <Link
               to="/facebook"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black hover:shadow-md transition-all w-full md:w-auto"
             >
-              அனைத்து பதிவுகளும் <ArrowRight className="w-4 h-4" />
+              {text.allPosts} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -196,11 +303,11 @@ function HomePage() {
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
               <BadgeCheck className="w-4 h-4" />
-              சமூக ஊடகம்
+              {text.socialBadge}
             </div>
-            <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">எங்களை எல்லா தளங்களிலும் பின்தொடருங்கள்</h2>
+            <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">{text.socialTitle}</h2>
             <p className="mt-4 max-w-2xl text-slate-600">
-              எங்கள் YouTube சேனல், Instagram feed மற்றும் சமூக ஊடக பக்கங்களின் சமீபத்திய அப்டேட்கள் இங்கே.
+              {text.socialBody}
             </p>
           </div>
 
@@ -209,12 +316,12 @@ function HomePage() {
               <div className="rounded-[32px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex items-start justify-between gap-6 mb-4">
                   <div>
-                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">யூடியூப்</div>
-                    <h3 className="mt-2 text-xl font-black text-slate-900">சமீபத்திய வீடியோக்கள்</h3>
-                    <p className="mt-2 text-sm text-slate-600">புதிய பதிவுகளைப் பாருங்கள் மற்றும் முழு வீடியோவைத் திறக்கவும்.</p>
+                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">{text.youtubeLabel}</div>
+                    <h3 className="mt-2 text-xl font-black text-slate-900">{text.youtubeTitle}</h3>
+                    <p className="mt-2 text-sm text-slate-600">{text.youtubeBody}</p>
                   </div>
                   <Link to="/youtube" className="shrink-0 inline-flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest hover:underline">
-                    அனைத்தையும் பார்க்க <ArrowRight className="w-4 h-4" />
+                    {text.seeAll} <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
                 <YouTubeVideosFeed limit={10} />
@@ -225,12 +332,12 @@ function HomePage() {
               <div className="rounded-[32px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex items-start justify-between gap-6 mb-4">
                   <div>
-                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">SOCIAL MEDIA</div>
-                    <h3 className="mt-2 text-xl font-black text-slate-900">சமீபத்திய சமூக ஊடக பதிவுகள்</h3>
-                    <p className="mt-2 text-sm text-slate-600">முகப்புப் பக்கத்திலேயே சமீபத்திய சமூக ஊடக பதிவுகளைப் பாருங்கள்.</p>
+                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">{text.socialLabel}</div>
+                    <h3 className="mt-2 text-xl font-black text-slate-900">{text.socialPostsTitle}</h3>
+                    <p className="mt-2 text-sm text-slate-600">{text.socialPostsBody}</p>
                   </div>
                   <Link to="/facebook" className="shrink-0 inline-flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest hover:underline">
-                    அனைத்தையும் பார்க்க <ArrowRight className="w-4 h-4" />
+                    {text.seeAll} <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
                 <FacebookPostsFeed limit={2} />
@@ -246,41 +353,41 @@ function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
                 <Megaphone className="w-4 h-4" />
-                விளம்பரம்
+                {text.adBadge}
               </div>
-              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">உங்கள் பிராண்டை எங்களுடன் விளம்பரப்படுத்துங்கள்</h2>
+              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">{text.adTitle}</h2>
               <p className="mt-4 max-w-2xl text-slate-600">
-                பேனர் விளம்பரம், ஸ்பான்சர் பகுதி, அல்லது உங்கள் பிராண்டு பிரச்சாரத்திற்கான இடத்தை பதிவு செய்யுங்கள்.
+                {text.adBody}
               </p>
             </div>
             <a
-              href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
+              href="mailto:admin@vannatamil.news?subject=Advertising%20Inquiry%20-%20Vannatamil%20News"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-primary text-white font-black hover:bg-primary/90 transition-all w-full md:w-auto"
             >
-              விளம்பரத்திற்கு தொடர்பு கொள்ள <ArrowRight className="w-4 h-4" />
+              {text.adContact} <ArrowRight className="w-4 h-4" />
             </a>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
-              <div className="text-xs font-black uppercase tracking-widest text-slate-500">விளம்பர இடம்</div>
-              <div className="mt-3 text-xl font-black text-slate-900">மேல் பேனர்</div>
-              <p className="mt-2 text-sm text-slate-600">பரிந்துரைக்கப்படும் அளவு: 728x90 அல்லது 970x250.</p>
+              <div className="text-xs font-black uppercase tracking-widest text-slate-500">{text.adSlot}</div>
+              <div className="mt-3 text-xl font-black text-slate-900">{text.topBanner}</div>
+              <p className="mt-2 text-sm text-slate-600">{text.sizeLarge}</p>
               <div className="mt-6 h-36 rounded-3xl border-2 border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-500 font-black">
-                உங்கள் பிராண்டு இங்கே
+                {text.yourBrandHere}
               </div>
             </div>
             <div className="lg:col-span-4 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
-              <div className="text-xs font-black uppercase tracking-widest text-slate-500">விளம்பர இடம்</div>
-              <div className="mt-3 text-xl font-black text-slate-900">பக்க கார்டு</div>
-              <p className="mt-2 text-sm text-slate-600">பரிந்துரைக்கப்படும் அளவு: 300x250.</p>
+              <div className="text-xs font-black uppercase tracking-widest text-slate-500">{text.adSlot}</div>
+              <div className="mt-3 text-xl font-black text-slate-900">{text.sidebarCard}</div>
+              <p className="mt-2 text-sm text-slate-600">{text.sizeSmall}</p>
               <div className="mt-6 h-36 rounded-3xl border-2 border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-500 font-black text-center px-6">
-                ஸ்பான்சர்
+                {text.sponsor}
                 <br />
-                இந்த பகுதி
+                {text.thisSection}
               </div>
               <div className="mt-6 text-sm text-slate-700">
-                மின்னஞ்சல்: <a className="text-primary font-black hover:underline" href="mailto:info@vannatamil.news">info@vannatamil.news</a>
+                {text.email}: <a className="text-primary font-black hover:underline" href="mailto:admin@vannatamil.news">admin@vannatamil.news</a>
               </div>
             </div>
           </div>
@@ -296,17 +403,17 @@ function HomePage() {
             <Play className="w-10 h-10 text-white fill-white" />
           </div>
           <h2 className="text-4xl lg:text-6xl font-black text-white mb-6 leading-tight">
-            எங்கிருந்தும் நேரலையில் செய்திகளைப் பாருங்கள்
+            {text.liveTitle}
           </h2>
           <p className="text-white/70 text-lg mb-10 max-w-2xl mx-auto">
-            நேரடி செய்தி அப்டேட்களுடன் இணைந்திருங்கள். எந்த நேரத்திலும் எந்த சாதனத்திலும் எங்கள் நேரலை ஒளிபரப்பைப் பாருங்கள்.
+            {text.liveBody}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/live-tv" className="px-10 py-4 bg-white text-primary font-black rounded-2xl hover:bg-slate-100 transition-all shadow-xl shadow-black/20">
-              நேரலை டிவி பார்க்க
+              {text.liveCta}
             </Link>
             <Link to="/about" className="px-10 py-4 bg-white/10 border border-white/20 text-white font-black rounded-2xl hover:bg-white/20 transition-all">
-              மேலும் அறிய
+              {text.learnMore}
             </Link>
           </div>
         </div>
@@ -317,15 +424,17 @@ function HomePage() {
 
 export default function App() {
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col">
-        <TopAdBar />
-        <Navbar />
-        <GlobalLeftAdSidebar />
-        <GlobalRightSidebar />
-        <AnimatedRoutes />
-        <Footer />
-      </div>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <TopAdBar />
+          <Navbar />
+          <GlobalLeftAdSidebar />
+          <GlobalRightSidebar />
+          <AnimatedRoutes />
+          <Footer />
+        </div>
+      </Router>
+    </LanguageProvider>
   );
 }

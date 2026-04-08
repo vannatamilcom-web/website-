@@ -5,6 +5,7 @@ import { Menu, Search, Globe, Moon, Sun, X } from 'lucide-react';
 import { CATEGORIES } from '../lib/api';
 import { FACEBOOK_URL, FACEBOOK_PAGE_URL } from '../lib/socialLinks';
 import { getCategoryLabel } from '../lib/categoryDisplay';
+import { useAppLanguage } from '../lib/language';
 
 function DesktopNavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
@@ -23,9 +24,22 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [lang, setLang] = useState<'ta' | 'en'>('ta');
   const [isDark, setIsDark] = useState(false);
+  const { lang, toggleLang } = useAppLanguage();
   const facebookUrl = FACEBOOK_URL || FACEBOOK_PAGE_URL || '#';
+  const text = lang === 'ta'
+    ? {
+        youtube: 'யூடியூப்',
+        social: 'சமூக ஊடகம்',
+        liveTv: 'நேரலை',
+        watchLiveTv: 'நேரலை பார்க்க',
+      }
+    : {
+        youtube: 'YouTube',
+        social: 'Social Media',
+        liveTv: 'LIVE TV',
+        watchLiveTv: 'WATCH LIVE TV',
+      };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -96,8 +110,8 @@ export default function Navbar() {
                 {getCategoryLabel(cat, lang)}
               </DesktopNavLink>
             ))}
-            <DesktopNavLink to="/youtube">YouTube</DesktopNavLink>
-            <DesktopNavLink to="/facebook">Social Media</DesktopNavLink>
+            <DesktopNavLink to="/youtube">{text.youtube}</DesktopNavLink>
+            <DesktopNavLink to="/facebook">{text.social}</DesktopNavLink>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -115,7 +129,7 @@ export default function Navbar() {
               f
             </a>
             <button
-              onClick={() => setLang(lang === 'ta' ? 'en' : 'ta')}
+              onClick={toggleLang}
               className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-200"
             >
               <Globe className="w-4 h-4" />
@@ -143,7 +157,7 @@ export default function Navbar() {
                 className="group relative block overflow-hidden rounded-full bg-primary px-6 py-2 text-xs font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90"
               >
                 <span className="absolute inset-y-0 -left-10 w-8 rotate-12 bg-white/25 blur-sm transition-transform duration-700 group-hover:translate-x-[180px]" />
-                <span className="relative z-10">LIVE TV</span>
+                <span className="relative z-10">{text.liveTv}</span>
               </Link>
             </motion.div>
           </div>
@@ -192,20 +206,20 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="border-b border-slate-100 pb-2 text-lg font-bold text-slate-800 transition-colors hover:text-primary"
               >
-                YouTube
+                {text.youtube}
               </Link>
               <Link
                 to="/facebook"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="border-b border-slate-100 pb-2 text-lg font-bold text-slate-800 transition-colors hover:text-primary"
               >
-                Social Media
+                {text.social}
               </Link>
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 className="mt-4 w-full rounded-xl bg-primary py-3 font-bold text-white shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90"
               >
-                WATCH LIVE TV
+                {text.watchLiveTv}
               </motion.button>
             </div>
           </motion.div>
