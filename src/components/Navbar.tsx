@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Search, Globe, Moon, Sun, X, ChevronDown } from 'lucide-react';
+import { Menu, Search, Globe, Moon, Sun, X } from 'lucide-react';
 import { CATEGORIES } from '../lib/api';
 import { FACEBOOK_URL, FACEBOOK_PAGE_URL } from '../lib/socialLinks';
 import { getCategoryLabel } from '../lib/categoryDisplay';
@@ -22,7 +22,10 @@ export default function Navbar() {
   useEffect(() => {
     const updateNavbarHeight = () => {
       if (!navRef.current) return;
-      document.documentElement.style.setProperty('--navbar-height', `${navRef.current.offsetHeight}px`);
+      const rootStyles = getComputedStyle(document.documentElement);
+      const topbarHeight = parseFloat(rootStyles.getPropertyValue('--topbar-height')) || 0;
+      const navbarHeight = navRef.current.offsetHeight;
+      document.documentElement.style.setProperty('--navbar-height', `${topbarHeight + navbarHeight}px`);
     };
 
     updateNavbarHeight();
@@ -41,6 +44,7 @@ export default function Navbar() {
     <nav
       ref={navRef}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'}`}
+      style={{ top: 'var(--topbar-height, 0px)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
