@@ -85,7 +85,7 @@ export default function Navbar() {
               to="/facebook"
               className="text-sm font-bold text-slate-700 hover:text-primary transition-colors uppercase tracking-wide"
             >
-              Facebook
+              Social Media
             </Link>
           </div>
 
@@ -165,7 +165,7 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2"
               >
-                Facebook
+                Social Media
               </Link>
               <button className="mt-4 w-full py-3 bg-primary text-white font-bold rounded-xl">
                 WATCH LIVE TV

@@ -34,7 +34,7 @@ export default function TopAdBar() {
           </div>
           <a
             className="shrink-0 px-4 py-2 rounded-xl bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-colors"
-            href="mailto:sheikhameda44@gmail.com?subject=Advertising%20Inquiry%20-%20Vannatamil%20News"
+            href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
           >
             தொடர்பு கொள்ள
           </a>

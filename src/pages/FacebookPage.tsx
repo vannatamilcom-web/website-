@@ -17,11 +17,11 @@ export default function FacebookPage() {
         <div className="mt-8 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="mb-8">
             <div className="inline-flex items-center rounded-full bg-[#1877F2] px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
-              Facebook
+              Social Media
             </div>
-            <h1 className="mt-5 text-4xl font-black text-slate-900 leading-tight">All Facebook Posts</h1>
+            <h1 className="mt-5 text-4xl font-black text-slate-900 leading-tight">All Social Media Posts</h1>
             <p className="mt-4 max-w-2xl text-slate-600">
-              Browse the Facebook page feed on its own separate page.
+              Browse the social media feed on its own separate page.
             </p>
           </div>
 

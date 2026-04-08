@@ -235,7 +235,7 @@ function HomePage() {
             </div>
             <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">எங்களை எல்லா தளங்களிலும் பின்தொடருங்கள்</h2>
             <p className="mt-4 max-w-2xl text-slate-600">
-              எங்கள் YouTube சேனல், Instagram feed மற்றும் Facebook பக்கத்தின் சமீபத்திய அப்டேட்கள் இங்கே.
+              எங்கள் YouTube சேனல், Instagram feed மற்றும் சமூக ஊடக பக்கங்களின் சமீபத்திய அப்டேட்கள் இங்கே.
             </p>
           </div>
 
@@ -260,9 +260,9 @@ function HomePage() {
               <div className="rounded-[32px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex items-start justify-between gap-6 mb-4">
                   <div>
-                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">பேஸ்புக்</div>
-                    <h3 className="mt-2 text-xl font-black text-slate-900">சமீபத்திய பதிவுகள்</h3>
-                    <p className="mt-2 text-sm text-slate-600">முகப்புப் பக்கத்திலேயே சமீபத்திய Facebook பதிவுகளைப் பாருங்கள்.</p>
+                    <div className="text-xs font-black uppercase tracking-widest text-slate-500">SOCIAL MEDIA</div>
+                    <h3 className="mt-2 text-xl font-black text-slate-900">சமீபத்திய சமூக ஊடக பதிவுகள்</h3>
+                    <p className="mt-2 text-sm text-slate-600">முகப்புப் பக்கத்திலேயே சமீபத்திய சமூக ஊடக பதிவுகளைப் பாருங்கள்.</p>
                   </div>
                   <Link to="/facebook" className="shrink-0 inline-flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest hover:underline">
                     அனைத்தையும் பார்க்க <ArrowRight className="w-4 h-4" />
@@ -289,7 +289,7 @@ function HomePage() {
               </p>
             </div>
             <a
-              href="mailto:sheikhameda44@gmail.com?subject=Advertising%20Inquiry%20-%20Vannatamil%20News"
+              href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-primary text-white font-black hover:bg-primary/90 transition-all w-full md:w-auto"
             >
               விளம்பரத்திற்கு தொடர்பு கொள்ள <ArrowRight className="w-4 h-4" />
@@ -315,7 +315,7 @@ function HomePage() {
                 இந்த பகுதி
               </div>
               <div className="mt-6 text-sm text-slate-700">
-                மின்னஞ்சல்: <a className="text-primary font-black hover:underline" href="mailto:sheikhameda44@gmail.com">sheikhameda44@gmail.com</a>
+                மின்னஞ்சல்: <a className="text-primary font-black hover:underline" href="mailto:info@vannatamil.news">info@vannatamil.news</a>
               </div>
             </div>
           </div>

@@ -85,8 +85,8 @@ export default function Footer() {
             <ul className="space-y-4 text-slate-400 text-sm font-medium">
               <li>
                 <span className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">மின்னஞ்சல்</span>
-                <a href="mailto:sheikhameda44@gmail.com" className="hover:text-white transition-colors break-all">
-                  sheikhameda44@gmail.com
+                <a href="mailto:info@vannatamil.news" className="hover:text-white transition-colors break-all">
+                  info@vannatamil.news
                 </a>
               </li>
               <li>
@@ -106,7 +106,7 @@ export default function Footer() {
               <li>
                 <span className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">விளம்பரம்</span>
                 <a
-                  href="mailto:sheikhameda44@gmail.com?subject=Advertising%20Inquiry%20-%20Vannatamil%20News"
+                  href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
                   className="hover:text-white transition-colors"
                 >
                   விளம்பரத்திற்கு தொடர்பு கொள்ள

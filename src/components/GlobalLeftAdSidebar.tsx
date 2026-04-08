@@ -77,7 +77,7 @@ export default function GlobalLeftAdSidebar() {
               SPONSOR THIS SECTION
             </div>
             <a
-              href="mailto:sheikhameda44@gmail.com?subject=Advertising%20Inquiry%20-%20Vannatamil%20News"
+              href="https://wa.me/919791067553?text=Hello%20Vannatamil%20News%2C%20I%20would%20like%20to%20advertise%20on%20your%20website."
               className="mt-6 inline-flex items-center justify-center rounded-2xl bg-primary px-5 py-3 text-sm font-black text-white transition-colors hover:bg-primary/90"
             >
               Contact for Ads

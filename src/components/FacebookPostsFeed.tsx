@@ -31,14 +31,14 @@ const normalizeMessage = (value: string) => value.replace(/\s+/g, ' ').trim();
 
 const getPostHeading = (message: string) => {
   const normalized = normalizeMessage(message);
-  if (!normalized) return 'Facebook post update';
+  if (!normalized) return 'Social media post update';
   const firstSentence = normalized.split(/[.!?]/)[0]?.trim() || normalized;
   return truncate(firstSentence, 90);
 };
 
 const getPostSummary = (message: string) => {
   const normalized = normalizeMessage(message);
-  if (!normalized) return 'Open this Facebook post to read the full update.';
+  if (!normalized) return 'Open this social media post to read the full update.';
   return truncate(normalized, 280);
 };
 
@@ -97,9 +97,9 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
   if (errorMessage || posts.length === 0) {
     return (
       <div className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6">
-        <div className="text-sm font-black text-slate-900 mb-2">Facebook latest posts</div>
+        <div className="text-sm font-black text-slate-900 mb-2">Social media latest posts</div>
         <div className="text-sm text-slate-700 leading-relaxed">
-          {errorMessage ? 'Facebook posts are not available right now.' : 'No Facebook posts found yet for this page.'}
+          {errorMessage ? 'Social media posts are not available right now.' : 'No social media posts found yet for this page.'}
         </div>
         {data?.error ? (
           <div className="text-xs text-slate-500 mt-3 leading-relaxed">
@@ -114,7 +114,7 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
     <div className="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden">
       <div className="p-6 border-b border-slate-100">
         <div className="text-sm font-black text-slate-900">
-          {variant === 'article' ? 'Facebook posts archive' : 'Facebook latest posts'}
+          {variant === 'article' ? 'Social media posts archive' : 'Social media latest posts'}
         </div>
         {data?.generatedAt ? (
           <div className="text-[10px] font-bold text-slate-400 mt-1">
@@ -147,7 +147,7 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
                     </div>
                   ) : null}
 
-                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-3">Facebook Post</div>
+                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-3">Social Media Post</div>
                   <h2 className="text-2xl font-black text-slate-900 leading-tight">
                     {getPostHeading(post.message)}
                   </h2>
@@ -189,7 +189,7 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
                 )}
 
                 <div className="min-w-0">
-                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-1">Facebook</div>
+                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-1">Social Media</div>
                   <div className="text-sm text-slate-800 font-semibold leading-snug">
                     {post.message ? truncate(post.message, 140) : 'Open post'}
                   </div>
