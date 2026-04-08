@@ -46,18 +46,18 @@ export default function Navbar() {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'}`}
       style={{ top: 'var(--topbar-height, 0px)' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-6">
+        <div className="flex justify-between items-center gap-3">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <button onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(true); }} className="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
               <Menu className="w-6 h-6 text-primary" />
             </button>
-            <div className="p-1 w-32 sm:w-40 md:w-44 lg:w-48 xl:w-52">
+            <div className="p-1 w-36 sm:w-44 md:w-48 lg:w-56 xl:w-60">
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="block w-20 h-12 sm:h-14 md:h-14 lg:h-16 xl:h-18 object-contain object-left"
+                className="block w-full h-14 sm:h-16 md:h-16 lg:h-20 xl:h-20 object-contain object-left"
                 loading="eager"
                 decoding="async"
               />
@@ -65,7 +65,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Categories */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-7">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-5">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.slug}
@@ -90,7 +90,7 @@ export default function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button className="p-2 hover:bg-slate-100 rounded-full transition-colors">
               <Search className="w-5 h-5 text-slate-600" />
             </button>
