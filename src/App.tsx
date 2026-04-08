@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import Navbar from './components/Navbar';
 import TopAdBar from './components/TopAdBar';
 import BreakingNewsTicker from './components/BreakingNewsTicker';
-import NewsCard from './components/NewsCard';
 import Footer from './components/Footer';
 import GlobalLeftAdSidebar from './components/GlobalLeftAdSidebar';
 import GlobalRightSidebar from './components/GlobalRightSidebar';
@@ -20,9 +19,9 @@ import AboutPage from './pages/AboutPage';
 import FacebookPage from './pages/FacebookPage';
 import FacebookPostsFeed from './components/FacebookPostsFeed';
 import YouTubeVideosFeed from './components/YouTubeVideosFeed';
-import { CATEGORIES, MOCK_NEWS } from './lib/api';
+import { CATEGORIES } from './lib/api';
 import { getCategoryLabel } from './lib/categoryDisplay';
-import { ArrowRight, BadgeCheck, Megaphone, Play, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Megaphone, Play, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function AnimatedRoutes() {
@@ -67,25 +66,6 @@ function HomePage() {
     const picks = order.map((slug) => bySlug.get(slug)).filter((v): v is Category => Boolean(v));
     return (picks.length ? picks : CATEGORIES).slice(0, 5);
   }, []);
-
-  const trendingArticles = useMemo(() => {
-    const items = Array.isArray(MOCK_NEWS) ? MOCK_NEWS : [];
-    const trending = items.filter((a) => Boolean(a?.trending));
-    return (trending.length ? trending : items).slice(0, 6);
-  }, []);
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.06, delayChildren: 0.05 },
-    },
-  } as const;
-
-  const fadeUpItem = {
-    hidden: { opacity: 0, y: 14, scale: 0.98 },
-    show: { opacity: 1, y: 0, scale: 1 },
-  } as const;
 
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-[var(--navbar-height)]">
@@ -189,40 +169,25 @@ function HomePage() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
-                <TrendingUp className="w-4 h-4" />
-                டிரெண்டிங்
+                <BadgeCheck className="w-4 h-4" />
+                Latest Posts
               </div>
-              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">இப்போது அதிகம் பேசப்படும் செய்திகள்</h2>
+              <h2 className="mt-5 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">முகப்புப் பக்கத்திற்கான சமீபத்திய பதிவுகள்</h2>
               <p className="mt-4 max-w-2xl text-slate-600">
-                சமீபத்திய முக்கிய செய்திகளை விரைவாக பாருங்கள். முழு செய்தியை படிக்க கார்டைத் திறக்கவும்.
+                முக்கியமான சமூக ஊடக அப்டேட்களில் இருந்து 2 சமீபத்திய பதிவுகளை இங்கே நேரடியாக பார்க்கலாம்.
               </p>
             </div>
             <Link
-              to="/menu"
+              to="/facebook"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black hover:shadow-md transition-all w-full md:w-auto"
             >
-              பிரிவுகளை பார்க்க <ArrowRight className="w-4 h-4" />
+              அனைத்து பதிவுகளும் <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-          >
-            {trendingArticles.map((article) => (
-              <motion.div
-                key={article.id}
-                variants={fadeUpItem}
-                transition={{ duration: 0.28, ease: 'easeOut' }}
-                className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <NewsCard article={article} />
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="rounded-[32px] border border-slate-200 bg-white p-3 sm:p-4 shadow-sm">
+            <FacebookPostsFeed limit={2} />
+          </div>
         </div>
       </section>
 
@@ -268,7 +233,7 @@ function HomePage() {
                     அனைத்தையும் பார்க்க <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-                <FacebookPostsFeed limit={10} />
+                <FacebookPostsFeed limit={2} />
               </div>
             </div>
           </div>
