@@ -2,14 +2,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const pageId = process.env.FACEBOOK_PAGE_ID;
-const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+const pageAccessToken = process.env.FB_PAGE_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
 const graphVersion = process.env.FACEBOOK_GRAPH_VERSION || 'v20.0';
 const limit = Number(process.env.FACEBOOK_POST_LIMIT || 12);
 
 const outputPath = path.join(process.cwd(), 'public', 'facebook-posts.json');
 
 if (!pageId || !pageAccessToken) {
-  const message = '[facebook] Missing FACEBOOK_PAGE_ID / FACEBOOK_PAGE_ACCESS_TOKEN.';
+  const message = '[facebook] Missing FACEBOOK_PAGE_ID / FB_PAGE_TOKEN.';
   console.log(`${message} Writing empty feed.`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(

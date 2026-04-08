@@ -39,9 +39,9 @@ export default function FacebookPostsFeed({ limit = 10 }: FacebookPostsFeedProps
         setIsLoading(true);
         setErrorMessage(null);
 
-        const response = await fetch(`/facebook-posts.php?limit=${encodeURIComponent(String(limit))}`, { cache: 'no-store' });
+        const response = await fetch('/facebook-posts.json', { cache: 'no-store' });
         if (!response.ok) {
-          throw new Error(`facebook-posts.php returned ${response.status}`);
+          throw new Error(`facebook-posts.json returned ${response.status}`);
         }
 
         const json = (await response.json()) as FacebookPostsResponse;
