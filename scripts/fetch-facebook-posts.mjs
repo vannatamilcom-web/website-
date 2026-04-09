@@ -105,28 +105,28 @@ async function graphFetch(url) {
 }
 
 async function resolvePageAccessToken() {
+  if (longLivedUserToken) {
+    const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
+    pagesUrl.searchParams.set('fields', 'id,name,access_token');
+    pagesUrl.searchParams.set('access_token', longLivedUserToken);
+
+    console.log('[facebook] Resolving page token from FB_LONG_TOKEN.');
+    const json = await graphFetch(pagesUrl.toString());
+    const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
+
+    if (!page?.access_token) {
+      throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
+    }
+
+    return page.access_token;
+  }
+
   if (configuredPageToken) {
     console.log('[facebook] Using configured page token from secrets.');
     return configuredPageToken;
   }
 
-  if (!longLivedUserToken) {
-    return null;
-  }
-
-  const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
-  pagesUrl.searchParams.set('fields', 'id,name,access_token');
-  pagesUrl.searchParams.set('access_token', longLivedUserToken);
-
-  console.log('[facebook] Resolving page token from the user token.');
-  const json = await graphFetch(pagesUrl.toString());
-  const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
-
-  if (!page?.access_token) {
-    throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
-  }
-
-  return page.access_token;
+  return null;
 }
 
 try {
@@ -134,7 +134,7 @@ try {
 
   if (!pageAccessToken) {
     throw new Error(
-      '[facebook] Missing Facebook token. Set FB_PAGE_TOKEN or FB_LONG_TOKEN.'
+      '[facebook] Missing Facebook token. Set FB_LONG_TOKEN or FB_PAGE_TOKEN.'
     );
   }
 

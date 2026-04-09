@@ -31,15 +31,15 @@ This site can show your latest Facebook Page posts as native website cards (no i
   - `VITE_FACEBOOK_URL` (public link for Navbar/Footer)
   - `VITE_FACEBOOK_PAGE_URL` (public Page URL)
   - `FACEBOOK_PAGE_ID`
-  - `FB_LONG_TOKEN` (recommended)
-  - `FB_PAGE_TOKEN` (optional direct page token)
+  - `FB_LONG_TOKEN` (recommended primary token)
+  - `FB_PAGE_TOKEN` (optional fallback page token)
   - `FACEBOOK_GRAPH_VERSION` (optional)
   - `FACEBOOK_POST_LIMIT` (optional)
 
 The deploy script now supports a longer-lasting token flow:
 
 - Best option: set `FB_LONG_TOKEN` and `FACEBOOK_PAGE_ID`
-- If you already have a page token, `FB_PAGE_TOKEN` still works
+- If `FB_LONG_TOKEN` is missing, `FB_PAGE_TOKEN` is used as a fallback
 
 ## Instagram posts (native cards; optional)
 
