@@ -4,7 +4,6 @@ import path from 'node:path';
 const pageId = process.env.FACEBOOK_PAGE_ID;
 const graphVersion = process.env.FACEBOOK_GRAPH_VERSION || 'v20.0';
 const limit = Number(process.env.FACEBOOK_POST_LIMIT || 12);
-const configuredPageToken = process.env.FB_PAGE_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
 const longLivedUserToken = process.env.FB_LONG_TOKEN || process.env.FB_USER_TOKEN;
 
 const outputPath = path.join(process.cwd(), 'public', 'facebook-posts.json');
@@ -105,42 +104,30 @@ async function graphFetch(url) {
 }
 
 async function resolvePageAccessToken() {
-  if (longLivedUserToken) {
-    try {
-      const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
-      pagesUrl.searchParams.set('fields', 'id,name,access_token');
-      pagesUrl.searchParams.set('access_token', longLivedUserToken);
-
-      console.log('[facebook] Resolving page token from FB_LONG_TOKEN.');
-      const json = await graphFetch(pagesUrl.toString());
-      const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
-
-      if (!page?.access_token) {
-        throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
-      }
-
-      return page.access_token;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.warn(`[facebook] FB_LONG_TOKEN could not resolve a page token: ${message}`);
-    }
+  if (!longLivedUserToken) {
+    return null;
   }
 
-  if (configuredPageToken) {
-    console.log('[facebook] Using configured page token from secrets.');
-    return configuredPageToken;
+  const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
+  pagesUrl.searchParams.set('fields', 'id,name,access_token');
+  pagesUrl.searchParams.set('access_token', longLivedUserToken);
+
+  console.log('[facebook] Resolving page token from FB_LONG_TOKEN.');
+  const json = await graphFetch(pagesUrl.toString());
+  const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
+
+  if (!page?.access_token) {
+    throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
   }
 
-  return null;
+  return page.access_token;
 }
 
 try {
   const pageAccessToken = await resolvePageAccessToken();
 
   if (!pageAccessToken) {
-    throw new Error(
-      '[facebook] Missing Facebook token. Set FB_LONG_TOKEN or FB_PAGE_TOKEN.'
-    );
+    throw new Error('[facebook] Missing Facebook token. Set FB_LONG_TOKEN.');
   }
 
   const postsEndpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/published_posts`);

@@ -37,7 +37,6 @@ jobs:
         continue-on-error: true
         env:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           FB_LONG_TOKEN: ${{ secrets.FB_LONG_TOKEN }}
           FACEBOOK_GRAPH_VERSION: ${{ secrets.FACEBOOK_GRAPH_VERSION }}
           FACEBOOK_POST_LIMIT: 30
