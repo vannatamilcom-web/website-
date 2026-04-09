@@ -1,22 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getConfiguredYouTubeChannelId, getYouTubeChannelUrl } from '../lib/youtube';
-
-type YouTubeVideo = {
-  id: string;
-  title: string;
-  publishedAt?: string;
-  thumbnail?: string;
-  url?: string;
-};
-
-type YouTubeVideosResponse = {
-  generatedAt?: string;
-  channelId?: string;
-  count?: number;
-  videos?: YouTubeVideo[];
-  error?: string;
-};
+import { fetchLatestVideos, getConfiguredYouTubeChannelId, getYouTubeChannelUrl, Video } from '../lib/youtube';
 
 type YouTubeVideosFeedProps = {
   limit?: number;
@@ -31,13 +15,14 @@ const truncate = (value: string, maxLength: number) => {
 export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [data, setData] = useState<YouTubeVideosResponse | null>(null);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [channelId, setChannelId] = useState<string | null>(null);
   const channelUrl = useMemo(() => {
     return (
       getYouTubeChannelUrl() ??
-      (data?.channelId ? `https://www.youtube.com/channel/${data.channelId}` : null)
+      (channelId ? `https://www.youtube.com/channel/${channelId}` : null)
     );
-  }, [data]);
+  }, [channelId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -46,20 +31,14 @@ export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps
       try {
         setIsLoading(true);
         setErrorMessage(null);
-
-        const response = await fetch('/youtube-videos.json', { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Missing youtube-videos.json (${response.status})`);
-
-        const json = (await response.json()) as YouTubeVideosResponse;
         const configuredChannelId = await getConfiguredYouTubeChannelId();
-        if (configuredChannelId && json?.channelId && json.channelId.trim() !== configuredChannelId) {
-          throw new Error('YouTube feed does not match configured channel. Regenerate youtube-videos.json for your channel.');
-        }
+        const fetchedVideos = await fetchLatestVideos({ max: Math.max(limit, 12), useMockFallback: false });
         if (!isMounted) return;
-        setData(json);
+        setChannelId(configuredChannelId);
+        setVideos(fetchedVideos);
       } catch (error) {
         if (!isMounted) return;
-        setData(null);
+        setVideos([]);
         setErrorMessage(error instanceof Error ? error.message : 'Failed to load YouTube videos');
       } finally {
         if (!isMounted) return;
@@ -71,9 +50,7 @@ export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  const videos = useMemo(() => (Array.isArray(data?.videos) ? data!.videos : []), [data]);
+  }, [limit]);
 
   if (isLoading) {
     return (
@@ -95,11 +72,6 @@ export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps
         <div className="text-sm text-slate-700 leading-relaxed">
           {errorMessage ? 'YouTube videos are not available yet on this deployment.' : 'No YouTube videos found yet for this deployment.'}
         </div>
-        {data?.error ? (
-          <div className="text-xs text-slate-500 mt-3 leading-relaxed">
-            Debug: <span className="font-mono">{data.error}</span>
-          </div>
-        ) : null}
         <div className="text-xs text-slate-500 mt-3 leading-relaxed">
           To enable: set <span className="font-mono">VITE_YOUTUBE_CHANNEL_ID</span> (GitHub Secret / .env) or update <span className="font-mono">public/site-config.json</span> with your channel ID (UC...) or channel URL, then rebuild/deploy.
         </div>
@@ -112,9 +84,6 @@ export default function YouTubeVideosFeed({ limit = 10 }: YouTubeVideosFeedProps
       <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
         <div>
           <div className="text-sm font-black text-slate-900">YouTube latest videos</div>
-          {data?.generatedAt ? (
-            <div className="text-[10px] font-bold text-slate-400 mt-1">Updated: {new Date(data.generatedAt).toLocaleString()}</div>
-          ) : null}
         </div>
         {channelUrl ? (
           <a

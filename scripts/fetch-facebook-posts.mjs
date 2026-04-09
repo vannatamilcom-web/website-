@@ -53,6 +53,21 @@ function getPostMessage(post, attachmentPreview) {
   return 'Open this Facebook post.';
 }
 
+function normalizeDate(value) {
+  const time = value ? Date.parse(value) : Number.NaN;
+  return Number.isFinite(time) ? time : 0;
+}
+
+function dedupePosts(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = item?.permalinkUrl || item?.id;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 if (!pageId) {
   const message = '[facebook] Missing FACEBOOK_PAGE_ID.';
   console.log(`${message} Writing empty feed.`);
@@ -148,19 +163,32 @@ try {
     );
   }
 
-  const endpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/published_posts`);
-  endpoint.searchParams.set(
+  const postsEndpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/published_posts`);
+  postsEndpoint.searchParams.set(
     'fields',
     'id,message,created_time,permalink_url,full_picture,status_type,attachments{media_type,media,url,target,title,description,unshimmed_url,subattachments.limit(1){media_type,media,url,target,title,description,unshimmed_url}}'
   );
-  endpoint.searchParams.set('limit', String(limit));
-  endpoint.searchParams.set('access_token', pageAccessToken);
+  postsEndpoint.searchParams.set('limit', String(limit));
+  postsEndpoint.searchParams.set('access_token', pageAccessToken);
 
-  console.log(`[facebook] Fetching posts: ${endpoint.origin}/${graphVersion}/${pageId}/published_posts?limit=${limit}`);
-  const json = await graphFetch(endpoint.toString());
+  const videosEndpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/videos`);
+  videosEndpoint.searchParams.set('fields', 'id,description,created_time,permalink_url,picture,source,title');
+  videosEndpoint.searchParams.set('limit', String(limit));
+  videosEndpoint.searchParams.set('access_token', pageAccessToken);
 
-  const posts = Array.isArray(json?.data) ? json.data : [];
-  const normalized = posts.map((post) => {
+  console.log(`[facebook] Fetching posts: ${postsEndpoint.origin}/${graphVersion}/${pageId}/published_posts?limit=${limit}`);
+  console.log(`[facebook] Fetching videos: ${videosEndpoint.origin}/${graphVersion}/${pageId}/videos?limit=${limit}`);
+
+  const [postsJson, videosJson] = await Promise.all([
+    graphFetch(postsEndpoint.toString()),
+    graphFetch(videosEndpoint.toString()).catch((error) => {
+      console.warn(error instanceof Error ? error.message : String(error));
+      return { data: [] };
+    }),
+  ]);
+
+  const posts = Array.isArray(postsJson?.data) ? postsJson.data : [];
+  const normalizedPosts = posts.map((post) => {
     const attachment = Array.isArray(post?.attachments?.data) ? post.attachments.data[0] : null;
     const attachmentPreview = getAttachmentPreview(attachment);
     return {
@@ -173,6 +201,21 @@ try {
       attachmentTitle: attachmentPreview.title || '',
     };
   });
+
+  const videos = Array.isArray(videosJson?.data) ? videosJson.data : [];
+  const normalizedVideos = videos.map((video) => ({
+    id: video?.id || '',
+    message: (typeof video?.description === 'string' && video.description.trim()) || video?.title || 'Watch this Facebook video.',
+    createdTime: video?.created_time || '',
+    permalinkUrl: video?.permalink_url || '',
+    fullPicture: video?.picture || null,
+    mediaType: 'video',
+    attachmentTitle: video?.title || '',
+  }));
+
+  const normalized = dedupePosts([...normalizedVideos, ...normalizedPosts])
+    .sort((a, b) => normalizeDate(b.createdTime) - normalizeDate(a.createdTime))
+    .slice(0, limit);
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(
