@@ -106,19 +106,24 @@ async function graphFetch(url) {
 
 async function resolvePageAccessToken() {
   if (longLivedUserToken) {
-    const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
-    pagesUrl.searchParams.set('fields', 'id,name,access_token');
-    pagesUrl.searchParams.set('access_token', longLivedUserToken);
+    try {
+      const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
+      pagesUrl.searchParams.set('fields', 'id,name,access_token');
+      pagesUrl.searchParams.set('access_token', longLivedUserToken);
 
-    console.log('[facebook] Resolving page token from FB_LONG_TOKEN.');
-    const json = await graphFetch(pagesUrl.toString());
-    const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
+      console.log('[facebook] Resolving page token from FB_LONG_TOKEN.');
+      const json = await graphFetch(pagesUrl.toString());
+      const page = Array.isArray(json?.data) ? json.data.find((entry) => entry?.id === pageId) : null;
 
-    if (!page?.access_token) {
-      throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
+      if (!page?.access_token) {
+        throw new Error(`[facebook] Could not find page access token for page ${pageId}.`);
+      }
+
+      return page.access_token;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(`[facebook] FB_LONG_TOKEN could not resolve a page token: ${message}`);
     }
-
-    return page.access_token;
   }
 
   if (configuredPageToken) {
