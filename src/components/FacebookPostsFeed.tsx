@@ -6,6 +6,8 @@ type FacebookPost = {
   createdTime: string;
   permalinkUrl: string;
   fullPicture: string | null;
+  mediaType?: string;
+  attachmentTitle?: string;
 };
 
 type FacebookPostsResponse = {
@@ -80,6 +82,7 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
   }, []);
 
   const posts = useMemo(() => (Array.isArray(data?.posts) ? data.posts : []), [data]);
+  const feedError = data?.error?.trim() || null;
 
   if (isLoading) {
     return (
@@ -94,12 +97,12 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
     );
   }
 
-  if (errorMessage || posts.length === 0) {
+  if (errorMessage || feedError || posts.length === 0) {
     return (
       <div className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6">
         <div className="text-sm font-black text-slate-900 mb-2">Social media latest posts</div>
         <div className="text-sm text-slate-700 leading-relaxed">
-          {errorMessage ? 'Social media posts are not available right now.' : 'No social media posts found yet for this page.'}
+          {errorMessage || feedError || 'No social media posts found yet for this page.'}
         </div>
       </div>
     );
@@ -143,8 +146,13 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
                   ) : null}
 
                   <div className="text-xs font-black uppercase tracking-widest text-primary mb-3">Social Media Post</div>
+                  {post.mediaType ? (
+                    <div className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                      {post.mediaType === 'video' ? 'Facebook Video' : post.mediaType}
+                    </div>
+                  ) : null}
                   <h2 className="text-2xl font-black text-slate-900 leading-tight">
-                    {getPostHeading(post.message)}
+                    {getPostHeading(post.attachmentTitle || post.message)}
                   </h2>
                   <p className="mt-4 text-base text-slate-700 leading-8">
                     {getPostSummary(post.message)}
@@ -184,7 +192,9 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
                 )}
 
                 <div className="min-w-0">
-                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-1">Social Media</div>
+                  <div className="text-xs font-black uppercase tracking-widest text-primary mb-1">
+                    {post.mediaType === 'video' ? 'Facebook Video' : 'Social Media'}
+                  </div>
                   <div className="text-sm text-slate-800 font-semibold leading-snug">
                     {post.message ? truncate(post.message, 140) : 'Open post'}
                   </div>

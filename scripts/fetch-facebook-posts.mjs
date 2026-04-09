@@ -12,6 +12,47 @@ const appSecret = process.env.FB_APP_SECRET;
 
 const outputPath = path.join(process.cwd(), 'public', 'facebook-posts.json');
 
+function getAttachmentPreview(attachment) {
+  if (!attachment || typeof attachment !== 'object') {
+    return { mediaType: '', imageUrl: null, title: '', description: '', targetUrl: '' };
+  }
+
+  const primaryImage = attachment?.media?.image?.src || null;
+  const nested = Array.isArray(attachment?.subattachments?.data) ? attachment.subattachments.data[0] : null;
+  const nestedImage = nested?.media?.image?.src || null;
+
+  return {
+    mediaType: attachment?.media_type || nested?.media_type || '',
+    imageUrl: primaryImage || nestedImage || null,
+    title: attachment?.title || nested?.title || '',
+    description: attachment?.description || nested?.description || '',
+    targetUrl:
+      attachment?.unshimmed_url ||
+      attachment?.url ||
+      attachment?.target?.url ||
+      nested?.unshimmed_url ||
+      nested?.url ||
+      nested?.target?.url ||
+      '',
+  };
+}
+
+function getPostMessage(post, attachmentPreview) {
+  const message = typeof post?.message === 'string' ? post.message.trim() : '';
+  if (message) return message;
+
+  const title = attachmentPreview.title?.trim() || '';
+  const description = attachmentPreview.description?.trim() || '';
+  const fallback = [title, description].filter(Boolean).join(' - ');
+  if (fallback) return fallback;
+
+  if (attachmentPreview.mediaType === 'video' || attachmentPreview.mediaType === 'share') {
+    return 'Watch this Facebook video post.';
+  }
+
+  return 'Open this Facebook post.';
+}
+
 if (!pageId) {
   const message = '[facebook] Missing FACEBOOK_PAGE_ID.';
   console.log(`${message} Writing empty feed.`);
@@ -107,22 +148,31 @@ try {
     );
   }
 
-  const endpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/posts`);
-  endpoint.searchParams.set('fields', 'id,message,created_time,permalink_url,full_picture');
+  const endpoint = new URL(`https://graph.facebook.com/${graphVersion}/${pageId}/published_posts`);
+  endpoint.searchParams.set(
+    'fields',
+    'id,message,created_time,permalink_url,full_picture,status_type,attachments{media_type,media,url,target,title,description,unshimmed_url,subattachments.limit(1){media_type,media,url,target,title,description,unshimmed_url}}'
+  );
   endpoint.searchParams.set('limit', String(limit));
   endpoint.searchParams.set('access_token', pageAccessToken);
 
-  console.log(`[facebook] Fetching posts: ${endpoint.origin}/${graphVersion}/${pageId}/posts?limit=${limit}`);
+  console.log(`[facebook] Fetching posts: ${endpoint.origin}/${graphVersion}/${pageId}/published_posts?limit=${limit}`);
   const json = await graphFetch(endpoint.toString());
 
   const posts = Array.isArray(json?.data) ? json.data : [];
-  const normalized = posts.map((post) => ({
-    id: post?.id || '',
-    message: post?.message || '',
-    createdTime: post?.created_time || '',
-    permalinkUrl: post?.permalink_url || '',
-    fullPicture: post?.full_picture || null,
-  }));
+  const normalized = posts.map((post) => {
+    const attachment = Array.isArray(post?.attachments?.data) ? post.attachments.data[0] : null;
+    const attachmentPreview = getAttachmentPreview(attachment);
+    return {
+      id: post?.id || '',
+      message: getPostMessage(post, attachmentPreview),
+      createdTime: post?.created_time || '',
+      permalinkUrl: post?.permalink_url || attachmentPreview.targetUrl || '',
+      fullPicture: post?.full_picture || attachmentPreview.imageUrl || null,
+      mediaType: attachmentPreview.mediaType || post?.status_type || '',
+      attachmentTitle: attachmentPreview.title || '',
+    };
+  });
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(

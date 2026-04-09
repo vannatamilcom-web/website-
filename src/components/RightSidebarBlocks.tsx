@@ -8,10 +8,12 @@ type FacebookPost = {
   message: string;
   createdTime?: string;
   permalinkUrl?: string;
+  mediaType?: string;
 };
 
 type FacebookPostsResponse = {
   posts?: FacebookPost[];
+  error?: string;
 };
 
 type RightSidebarBlocksProps = {
@@ -33,6 +35,7 @@ export default function RightSidebarBlocks({
 }: RightSidebarBlocksProps) {
   const [videos, setVideos] = useState<Video[]>([]);
   const [posts, setPosts] = useState<FacebookPost[]>([]);
+  const [facebookError, setFacebookError] = useState('');
   const keywords = useMemo(() => getCategoryKeywords(categorySlug), [categorySlug]);
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export default function RightSidebarBlocks({
         const response = await fetch('/facebook-posts.json', { cache: 'no-store' });
         if (!response.ok) throw new Error('facebook-posts.json missing');
         const json = (await response.json()) as FacebookPostsResponse;
+        setFacebookError(json.error || '');
         const allPosts = Array.isArray(json.posts) ? json.posts : [];
         const filtered = keywords.length
           ? allPosts.filter((post) => {
@@ -69,6 +73,7 @@ export default function RightSidebarBlocks({
         setPosts((filtered.length ? filtered : allPosts).slice(0, 6));
       } catch {
         setPosts([]);
+        setFacebookError('Facebook posts are not available right now.');
       }
     };
 
@@ -129,7 +134,9 @@ export default function RightSidebarBlocks({
               rel="noreferrer"
               className="block rounded-2xl border border-slate-200 p-4 hover:border-slate-300 transition-colors"
             >
-              <div className="text-xs font-black uppercase tracking-widest text-[#1877F2]">Facebook Post</div>
+              <div className="text-xs font-black uppercase tracking-widest text-[#1877F2]">
+                {post.mediaType === 'video' ? 'Facebook Video' : 'Facebook Post'}
+              </div>
               <div className="mt-2 text-sm font-semibold text-slate-900 leading-snug">
                 {truncate(post.message || 'Open post', 140)}
               </div>
@@ -140,7 +147,7 @@ export default function RightSidebarBlocks({
               ) : null}
             </a>
           )) : (
-            <div className="text-sm text-slate-500">No Facebook posts available for this section right now.</div>
+            <div className="text-sm text-slate-500">{facebookError || 'No Facebook posts available for this section right now.'}</div>
           )}
         </div>
       </div>
