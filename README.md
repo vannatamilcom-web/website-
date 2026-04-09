@@ -33,9 +33,6 @@ This site can show your latest Facebook Page posts as native website cards (no i
   - `FACEBOOK_PAGE_ID`
   - `FB_LONG_TOKEN` (recommended)
   - `FB_PAGE_TOKEN` (optional direct page token)
-  - `FB_SHORT_TOKEN` (optional fallback)
-  - `FB_APP_ID` (required only with `FB_SHORT_TOKEN`)
-  - `FB_APP_SECRET` (required only with `FB_SHORT_TOKEN`)
   - `FACEBOOK_GRAPH_VERSION` (optional)
   - `FACEBOOK_POST_LIMIT` (optional)
 
@@ -43,7 +40,6 @@ The deploy script now supports a longer-lasting token flow:
 
 - Best option: set `FB_LONG_TOKEN` and `FACEBOOK_PAGE_ID`
 - If you already have a page token, `FB_PAGE_TOKEN` still works
-- If you only have a short-lived token, set `FB_SHORT_TOKEN`, `FB_APP_ID`, and `FB_APP_SECRET`, and the build will exchange it before fetching posts
 
 ## Instagram posts (native cards; optional)
 

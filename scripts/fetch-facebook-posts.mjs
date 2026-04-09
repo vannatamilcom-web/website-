@@ -6,9 +6,6 @@ const graphVersion = process.env.FACEBOOK_GRAPH_VERSION || 'v20.0';
 const limit = Number(process.env.FACEBOOK_POST_LIMIT || 12);
 const configuredPageToken = process.env.FB_PAGE_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
 const longLivedUserToken = process.env.FB_LONG_TOKEN || process.env.FB_USER_TOKEN;
-const shortLivedUserToken = process.env.FB_SHORT_TOKEN;
-const appId = process.env.FB_APP_ID;
-const appSecret = process.env.FB_APP_SECRET;
 
 const outputPath = path.join(process.cwd(), 'public', 'facebook-posts.json');
 
@@ -107,41 +104,19 @@ async function graphFetch(url) {
   return json;
 }
 
-async function exchangeForLongLivedUserToken() {
-  if (longLivedUserToken) {
-    return longLivedUserToken;
-  }
-
-  if (!shortLivedUserToken || !appId || !appSecret) {
-    return null;
-  }
-
-  const exchangeUrl = new URL(`https://graph.facebook.com/${graphVersion}/oauth/access_token`);
-  exchangeUrl.searchParams.set('grant_type', 'fb_exchange_token');
-  exchangeUrl.searchParams.set('client_id', appId);
-  exchangeUrl.searchParams.set('client_secret', appSecret);
-  exchangeUrl.searchParams.set('fb_exchange_token', shortLivedUserToken);
-
-  console.log('[facebook] Exchanging FB_SHORT_TOKEN for a long-lived user token.');
-  const json = await graphFetch(exchangeUrl.toString());
-  return json?.access_token || null;
-}
-
 async function resolvePageAccessToken() {
   if (configuredPageToken) {
     console.log('[facebook] Using configured page token from secrets.');
     return configuredPageToken;
   }
 
-  const userToken = await exchangeForLongLivedUserToken();
-
-  if (!userToken) {
+  if (!longLivedUserToken) {
     return null;
   }
 
   const pagesUrl = new URL(`https://graph.facebook.com/${graphVersion}/me/accounts`);
   pagesUrl.searchParams.set('fields', 'id,name,access_token');
-  pagesUrl.searchParams.set('access_token', userToken);
+  pagesUrl.searchParams.set('access_token', longLivedUserToken);
 
   console.log('[facebook] Resolving page token from the user token.');
   const json = await graphFetch(pagesUrl.toString());
@@ -159,7 +134,7 @@ try {
 
   if (!pageAccessToken) {
     throw new Error(
-      '[facebook] Missing Facebook token. Set FB_PAGE_TOKEN, or set FB_LONG_TOKEN, or set FB_SHORT_TOKEN with FB_APP_ID and FB_APP_SECRET.'
+      '[facebook] Missing Facebook token. Set FB_PAGE_TOKEN or FB_LONG_TOKEN.'
     );
   }
 

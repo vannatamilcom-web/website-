@@ -39,9 +39,6 @@ jobs:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           FB_LONG_TOKEN: ${{ secrets.FB_LONG_TOKEN }}
-          FB_SHORT_TOKEN: ${{ secrets.FB_SHORT_TOKEN }}
-          FB_APP_ID: ${{ secrets.FB_APP_ID }}
-          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
           FACEBOOK_GRAPH_VERSION: ${{ secrets.FACEBOOK_GRAPH_VERSION }}
           FACEBOOK_POST_LIMIT: 30
 
