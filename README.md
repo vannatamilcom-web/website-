@@ -38,7 +38,7 @@ This site can show your latest Facebook Page posts as native website cards (no i
 The deploy script now supports a longer-lasting token flow:
 
 - Set `FB_LONG_TOKEN` and `FACEBOOK_PAGE_ID`
-- `FB_LONG_TOKEN` must be a valid long-lived Facebook user token with access to the page
+- `FB_LONG_TOKEN` is used directly for Facebook Graph API requests to the page
 
 ## Instagram posts (native cards; optional)
 
