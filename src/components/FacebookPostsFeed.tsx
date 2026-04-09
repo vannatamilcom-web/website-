@@ -101,11 +101,6 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
         <div className="text-sm text-slate-700 leading-relaxed">
           {errorMessage ? 'Social media posts are not available right now.' : 'No social media posts found yet for this page.'}
         </div>
-        {data?.error ? (
-          <div className="text-xs text-slate-500 mt-3 leading-relaxed">
-            Debug: <span className="font-mono">{data.error}</span>
-          </div>
-        ) : null}
       </div>
     );
   }
