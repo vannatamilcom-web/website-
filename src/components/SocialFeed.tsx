@@ -4,6 +4,7 @@ import { FACEBOOK_URL, FACEBOOK_PAGE_URL, INSTAGRAM_URL } from '../lib/socialLin
 import FacebookPostsFeed from './FacebookPostsFeed';
 import InstagramPostsFeed from './InstagramPostsFeed';
 import YouTubeVideosFeed from './YouTubeVideosFeed';
+import CombinedSocialGrid from './CombinedSocialGrid';
 
 export default function SocialFeed() {
   const facebookUrl = FACEBOOK_URL;
@@ -47,13 +48,8 @@ export default function SocialFeed() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-5 space-y-6">
-          <FacebookPostsFeed />
-          <YouTubeVideosFeed />
-        </div>
-
-        <div className="lg:col-span-7">
-          <InstagramPostsFeed />
+        <div className="lg:col-span-12">
+          <CombinedSocialGrid limit={10} />
         </div>
       </div>
     </section>
