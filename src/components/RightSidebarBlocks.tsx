@@ -28,6 +28,19 @@ const truncate = (value: string, maxLength: number) => {
   return `${trimmed.slice(0, maxLength - 1)}...`;
 };
 
+const normalizeFacebookPermalink = (value?: string) => {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith('//')) return `https:${trimmed}`;
+  if (/^(?:www\.)?facebook\.com\//i.test(trimmed)) return `https://${trimmed.replace(/^\/+/, '')}`;
+  if (trimmed.startsWith('/')) return `https://www.facebook.com${trimmed}`;
+  if (trimmed.includes('/videos/') || trimmed.includes('/posts/')) {
+    return `https://www.facebook.com/${trimmed.replace(/^\/+/, '')}`;
+  }
+  return trimmed;
+};
+
 export default function RightSidebarBlocks({
   categorySlug,
   youtubeTitle = 'YouTube Videos',
@@ -129,9 +142,9 @@ export default function RightSidebarBlocks({
           {posts.length > 0 ? posts.map((post) => (
             <a
               key={post.id}
-              href={post.permalinkUrl || '#'}
+              href={normalizeFacebookPermalink(post.permalinkUrl) || '#'}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="block rounded-2xl border border-slate-200 p-4 hover:border-slate-300 transition-colors"
             >
               <div className="text-xs font-black uppercase tracking-widest text-[#1877F2]">

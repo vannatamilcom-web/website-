@@ -54,6 +54,19 @@ function normalizeDate(value) {
   return Number.isFinite(time) ? time : 0;
 }
 
+function normalizeFacebookPermalink(value) {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith('//')) return `https:${trimmed}`;
+  if (/^(?:www\.)?facebook\.com\//i.test(trimmed)) return `https://${trimmed.replace(/^\/+/, '')}`;
+  if (trimmed.startsWith('/')) return `https://www.facebook.com${trimmed}`;
+  if (trimmed.includes('/videos/') || trimmed.includes('/posts/')) {
+    return `https://www.facebook.com/${trimmed.replace(/^\/+/, '')}`;
+  }
+  return trimmed;
+}
+
 function dedupePosts(items) {
   const seen = new Set();
   return items.filter((item) => {
@@ -150,7 +163,7 @@ try {
       id: post?.id || '',
       message: getPostMessage(post, attachmentPreview),
       createdTime: post?.created_time || '',
-      permalinkUrl: post?.permalink_url || attachmentPreview.targetUrl || '',
+      permalinkUrl: normalizeFacebookPermalink(post?.permalink_url || attachmentPreview.targetUrl || ''),
       fullPicture: post?.full_picture || attachmentPreview.imageUrl || null,
       mediaType: attachmentPreview.mediaType || post?.status_type || '',
       attachmentTitle: attachmentPreview.title || '',
@@ -162,7 +175,7 @@ try {
     id: video?.id || '',
     message: (typeof video?.description === 'string' && video.description.trim()) || video?.title || 'Watch this Facebook video.',
     createdTime: video?.created_time || '',
-    permalinkUrl: video?.permalink_url || '',
+    permalinkUrl: normalizeFacebookPermalink(video?.permalink_url || ''),
     fullPicture: video?.picture || null,
     mediaType: 'video',
     attachmentTitle: video?.title || '',

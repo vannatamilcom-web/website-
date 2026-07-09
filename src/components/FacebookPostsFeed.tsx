@@ -44,6 +44,19 @@ const getPostSummary = (message: string) => {
   return truncate(normalized, 280);
 };
 
+const normalizeFacebookPermalink = (value?: string) => {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith('//')) return `https:${trimmed}`;
+  if (/^(?:www\.)?facebook\.com\//i.test(trimmed)) return `https://${trimmed.replace(/^\/+/, '')}`;
+  if (trimmed.startsWith('/')) return `https://www.facebook.com${trimmed}`;
+  if (trimmed.includes('/videos/') || trimmed.includes('/posts/')) {
+    return `https://www.facebook.com/${trimmed.replace(/^\/+/, '')}`;
+  }
+  return trimmed;
+};
+
 export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: FacebookPostsFeedProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -127,9 +140,9 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
             return (
               <article key={post.id} className="p-6 sm:p-8">
                 <a
-                  href={post.permalinkUrl || '#'}
+                  href={normalizeFacebookPermalink(post.permalinkUrl) || '#'}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="block hover:opacity-95 transition-opacity"
                 >
                   {post.fullPicture ? (
@@ -170,9 +183,9 @@ export default function FacebookPostsFeed({ limit = 10, variant = 'compact' }: F
           return (
             <a
               key={post.id}
-              href={post.permalinkUrl || '#'}
+              href={normalizeFacebookPermalink(post.permalinkUrl) || '#'}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="block p-6 hover:bg-slate-50 transition-colors"
             >
               <div className="flex gap-4">
