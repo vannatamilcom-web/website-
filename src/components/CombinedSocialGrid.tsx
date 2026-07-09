@@ -11,17 +11,20 @@ type UnifiedItem = {
   mediaType?: string;
 };
 
-export default function CombinedSocialGrid({ limit = 10 }: { limit?: number }) {
+export default function CombinedSocialGrid({ limit = 10, refreshInterval = 60000 }: { limit?: number; refreshInterval?: number }) {
   const [items, setItems] = useState<UnifiedItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
     let mounted = true;
+    let intervalId: NodeJS.Timeout | undefined;
+
     const load = async () => {
       try {
-        setIsLoading(true);
         setError(null);
+        if (isLoading === true) setIsLoading(true);
 
         const [fbResp, igResp, ytResp] = await Promise.allSettled([
           fetch('/facebook-posts.json', { cache: 'no-store' }),
@@ -81,27 +84,42 @@ export default function CombinedSocialGrid({ limit = 10 }: { limit?: number }) {
           })
           .slice(0, limit || 10);
 
-        if (mounted) setItems(combined);
+        if (mounted) {
+          setItems(combined);
+          setLastUpdated(new Date());
+          setIsLoading(false);
+        }
       } catch (err) {
-        if (mounted) setError(err instanceof Error ? err.message : String(err));
-      } finally {
-        if (mounted) setIsLoading(false);
+        if (mounted) {
+          setError(err instanceof Error ? err.message : String(err));
+          setIsLoading(false);
+        }
       }
     };
 
+    // Initial load
     load();
+
+    // Set up auto-refresh interval
+    if (refreshInterval > 0) {
+      intervalId = setInterval(() => {
+        load();
+      }, refreshInterval);
+    }
+
     return () => {
       mounted = false;
+      if (intervalId) clearInterval(intervalId);
     };
-  }, [limit]);
+  }, [limit, refreshInterval]);
 
   const placeholder = (source: string) => `No image available (${source})`;
 
-  if (isLoading) {
+  if (isLoading && !items.length) {
     return <div className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6">Loading social posts...</div>;
   }
 
-  if (error) {
+  if (error && !items.length) {
     return <div className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6">{error}</div>;
   }
 
@@ -111,7 +129,12 @@ export default function CombinedSocialGrid({ limit = 10 }: { limit?: number }) {
 
   return (
     <div className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6">
-      <div className="text-sm font-black text-slate-900 mb-4">Latest social updates</div>
+      <div className="flex justify-between items-baseline mb-4">
+        <div className="text-sm font-black text-slate-900">Latest social updates</div>
+        <div className="text-[10px] text-slate-400">
+          {lastUpdated ? `Updated: ${lastUpdated.toLocaleTimeString()}` : 'Loading...'}
+        </div>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-10 gap-4">
         {items.map((it) => {
           const hasLink = typeof it.permalinkUrl === 'string' && it.permalinkUrl.trim().length > 0;
