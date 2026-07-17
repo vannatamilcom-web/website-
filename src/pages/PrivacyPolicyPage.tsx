@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Seo from '../components/Seo';
+import { siteSchema, webPageSchema } from '../lib/schema';
 
 export default function PrivacyPolicyPage() {
   useEffect(() => {
@@ -10,6 +12,17 @@ export default function PrivacyPolicyPage() {
 
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-[var(--navbar-height)] min-h-screen bg-white">
+      <Seo
+        title="Privacy Policy | Vannatamil News"
+        description="Read the Vannatamil News privacy policy, including how social media content and website information are handled."
+        keywords="Vannatamil News privacy policy, Tamil news privacy"
+        canonicalPath="/privacy-policy"
+        structuredData={siteSchema(webPageSchema(
+          '/privacy-policy',
+          'Privacy Policy | Vannatamil News',
+          'Read the Vannatamil News privacy policy, including how social media content and website information are handled.',
+        ))}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
           to="/"
@@ -84,4 +97,3 @@ export default function PrivacyPolicyPage() {
     </motion.main>
   );
 }
-

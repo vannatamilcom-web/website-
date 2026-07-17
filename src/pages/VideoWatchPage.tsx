@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import { fetchLatestVideos, Video } from '../lib/youtube';
+import Seo from '../components/Seo';
+import { siteSchema, videoSchema } from '../lib/schema';
 
 function toPlainText(value: string | undefined): string {
   if (!value) return '';
@@ -34,6 +36,21 @@ export default function VideoWatchPage() {
 
   return (
     <main className="pt-[var(--navbar-height)] min-h-screen bg-slate-950 text-white">
+      <Seo
+        title={`${selectedVideo?.title || 'Video'} | Vannatamil News`}
+        description={toPlainText(selectedVideo?.description) || 'Watch this Tamil news video from Vannatamil News.'}
+        keywords="Tamil news video, Vannatamil News video, YouTube Tamil news"
+        canonicalPath={`/videos/${videoId}`}
+        type="article"
+        image={selectedVideo?.thumbnail || '/logo.png'}
+        structuredData={siteSchema(videoSchema({
+          id: videoId,
+          title: selectedVideo?.title || 'Vannatamil News Video',
+          description: toPlainText(selectedVideo?.description) || 'Tamil news video from Vannatamil News.',
+          thumbnail: selectedVideo?.thumbnail,
+          publishedAt: selectedVideo?.publishedAt,
+        }))}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">

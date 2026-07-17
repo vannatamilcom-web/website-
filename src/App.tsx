@@ -22,6 +22,7 @@ import YouTubeVideosFeed from './components/YouTubeVideosFeed';
 import { CATEGORIES } from './lib/api';
 import { getCategoryLabel } from './lib/categoryDisplay';
 import { LanguageProvider, useAppLanguage } from './lib/language';
+import { collectionPageSchema, siteSchema, webPageSchema } from './lib/schema';
 import { ArrowRight, BadgeCheck, Megaphone, Play, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -181,14 +182,10 @@ function HomePage() {
         description={text.description}
         keywords={text.keywords}
         canonicalPath="/"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'NewsMediaOrganization',
-          name: 'Vannatamil News',
-          url: window.location.origin,
-          logo: `${window.location.origin}/logo.png`,
-          sameAs: ['https://www.youtube.com/', 'https://www.facebook.com/'],
-        }}
+        structuredData={siteSchema([
+          webPageSchema('/', text.title, text.description),
+          collectionPageSchema('/youtube', 'Latest Tamil News Videos', 'Latest YouTube videos and news clips from Vannatamil News.'),
+        ])}
       />
       <BreakingNewsTicker />
 

@@ -6,6 +6,8 @@ import { getCategoryLabel } from '../lib/categoryDisplay';
 import { getCategoryKeywords, getCategorySearchQuery } from '../lib/categoryFilters';
 import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import { fetchLatestVideos, getConfiguredMoviesPlaylistId, Video } from '../lib/youtube';
+import Seo from '../components/Seo';
+import { collectionPageSchema, siteSchema, videoSchema } from '../lib/schema';
 
 export default function CategoryVideosPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -63,6 +65,21 @@ export default function CategoryVideosPage() {
 
   return (
     <main className="pt-[var(--navbar-height)] min-h-screen bg-slate-50">
+      <Seo
+        title={`${categoryEn} Videos | Vannatamil News`}
+        description={`Watch ${categoryEn} Tamil news videos from Vannatamil News.`}
+        keywords={`${categoryEn} Tamil news, ${categoryEn} videos, Vannatamil News`}
+        canonicalPath={`/category/${category.slug}`}
+        image={selectedVideo?.thumbnail || '/logo.png'}
+        structuredData={siteSchema([
+          collectionPageSchema(
+            `/category/${category.slug}`,
+            `${categoryEn} Videos | Vannatamil News`,
+            `Watch ${categoryEn} Tamil news videos from Vannatamil News.`,
+          ),
+          ...(selectedVideo ? [videoSchema(selectedVideo)] : []),
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>

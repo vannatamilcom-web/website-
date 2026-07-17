@@ -4,6 +4,7 @@ import { ExternalLink, Youtube } from 'lucide-react';
 import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import Seo from '../components/Seo';
 import { fetchLatestVideos, Video } from '../lib/youtube';
+import { collectionPageSchema, siteSchema, videoSchema } from '../lib/schema';
 
 export default function YouTubePage() {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -33,6 +34,14 @@ export default function YouTubePage() {
         description="Watch the latest YouTube videos from Vannatamil News including breaking updates, live clips, and Tamil news coverage."
         keywords="Vannatamil News YouTube, Tamil news videos, latest Tamil videos, live news clips Tamil"
         canonicalPath="/youtube"
+        structuredData={siteSchema([
+          collectionPageSchema(
+            '/youtube',
+            'YouTube Videos | Vannatamil News',
+            'Watch the latest YouTube videos from Vannatamil News including breaking updates, live clips, and Tamil news coverage.',
+          ),
+          ...videos.slice(0, 6).map(videoSchema),
+        ])}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-10">

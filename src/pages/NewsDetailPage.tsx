@@ -6,6 +6,7 @@ import { getCategorySlugFromName } from '../lib/categoryFilters';
 import SidebarTrending from '../components/SidebarTrending';
 import RightSidebarBlocks from '../components/RightSidebarBlocks';
 import Seo from '../components/Seo';
+import { absoluteUrl, siteSchema } from '../lib/schema';
 import { motion } from 'framer-motion';
 
 export default function NewsDetailPage() {
@@ -31,8 +32,7 @@ export default function NewsDetailPage() {
         canonicalPath={`/news/${article.id}`}
         type="article"
         image={article.image}
-        structuredData={{
-          '@context': 'https://schema.org',
+        structuredData={siteSchema({
           '@type': 'NewsArticle',
           headline: article.title,
           description: article.summary,
@@ -44,15 +44,10 @@ export default function NewsDetailPage() {
             name: article.author,
           },
           publisher: {
-            '@type': 'NewsMediaOrganization',
-            name: 'Vannatamil News',
-            logo: {
-              '@type': 'ImageObject',
-              url: `${window.location.origin}/logo.png`,
-            },
+            '@id': absoluteUrl('/#organization'),
           },
-          mainEntityOfPage: `${window.location.origin}/news/${article.id}`,
-        }}
+          mainEntityOfPage: absoluteUrl(`/news/${article.id}`),
+        })}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link to="/" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors mb-8">

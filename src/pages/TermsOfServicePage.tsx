@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Seo from '../components/Seo';
+import { siteSchema, webPageSchema } from '../lib/schema';
 
 export default function TermsOfServicePage() {
   useEffect(() => {
@@ -10,6 +12,17 @@ export default function TermsOfServicePage() {
 
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-[var(--navbar-height)] min-h-screen bg-white">
+      <Seo
+        title="Terms of Service | Vannatamil News"
+        description="Read the Vannatamil News terms of service for using the website and social media news content."
+        keywords="Vannatamil News terms of service, Tamil news terms"
+        canonicalPath="/terms-of-service"
+        structuredData={siteSchema(webPageSchema(
+          '/terms-of-service',
+          'Terms of Service | Vannatamil News',
+          'Read the Vannatamil News terms of service for using the website and social media news content.',
+        ))}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
           to="/"
@@ -96,4 +109,3 @@ export default function TermsOfServicePage() {
     </motion.main>
   );
 }
-

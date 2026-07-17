@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, BadgeCheck, Building2, Globe2, Megaphone, Rocket, ShieldCheck, Target, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Seo from '../components/Seo';
+import { siteSchema, webPageSchema } from '../lib/schema';
 
 function SectionCard(props: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   return (
@@ -28,6 +30,17 @@ export default function AboutPage() {
 
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-[var(--navbar-height)] min-h-screen bg-slate-50">
+      <Seo
+        title="About Vannatamil News"
+        description="Learn about Vannatamil News, a Tamil digital news platform from AS Computer & CCTV serving Tamil audiences with fast and reliable updates."
+        keywords="About Vannatamil News, Tamil digital news, AS Computer CCTV, Tamil Nadu news"
+        canonicalPath="/about"
+        structuredData={siteSchema(webPageSchema(
+          '/about',
+          'About Vannatamil News',
+          'Learn about Vannatamil News, a Tamil digital news platform from AS Computer & CCTV serving Tamil audiences with fast and reliable updates.',
+        ))}
+      />
       <section className="relative overflow-hidden bg-slate-900">
         <div className="absolute inset-0 opacity-25">
           <div className="absolute -top-24 -left-24 w-[520px] h-[520px] bg-primary/60 blur-3xl rounded-full" />

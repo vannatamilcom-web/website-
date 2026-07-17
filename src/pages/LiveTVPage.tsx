@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Info, MessageCircle, Play, Share2, Video as VideoIcon } from 'lucide-react';
 import { fetchLiveVideoId, fetchPastLiveVideos, Video } from '../lib/youtube';
+import Seo from '../components/Seo';
+import { siteSchema, videoSchema, webPageSchema } from '../lib/schema';
 
 function formatPublishedAt(value: string | undefined) {
   if (!value) return '';
@@ -91,6 +93,16 @@ export default function LiveTVPage() {
 
   return (
     <main className="pt-[var(--navbar-height)] min-h-screen bg-slate-950 text-white">
+      <Seo
+        title="Live TV | Vannatamil News"
+        description="Watch Vannatamil News live TV and previous live Tamil news streams."
+        keywords="Vannatamil News live TV, Tamil live news, Tamil news live stream"
+        canonicalPath="/live-tv"
+        structuredData={siteSchema([
+          webPageSchema('/live-tv', 'Live TV | Vannatamil News', 'Watch Vannatamil News live TV and previous live Tamil news streams.'),
+          ...(nowPlaying ? [videoSchema(nowPlaying)] : []),
+        ])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left list */}

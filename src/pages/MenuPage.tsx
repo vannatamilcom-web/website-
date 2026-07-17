@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { CATEGORIES, getCategoryBg } from '../lib/api';
 import { getCategoryLabel } from '../lib/categoryDisplay';
 import Seo from '../components/Seo';
+import { collectionPageSchema, siteSchema } from '../lib/schema';
 
 export default function MenuPage() {
   return (
@@ -11,6 +12,11 @@ export default function MenuPage() {
         description="Browse Vannatamil News by category including Tamil Nadu, politics, business, technology, sports, and entertainment."
         keywords="Tamil news categories, Tamil Nadu news, politics news Tamil, sports news Tamil, business news Tamil"
         canonicalPath="/menu"
+        structuredData={siteSchema(collectionPageSchema(
+          '/menu',
+          'Categories | Vannatamil News',
+          'Browse Vannatamil News by category including Tamil Nadu, politics, business, technology, sports, and entertainment.',
+        ))}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-10">
